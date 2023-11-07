@@ -6,4 +6,5 @@ How to use
 
 - Input can be copy and paste from website, but is generated from template
 
-https://github.com/caderek/aocrunner
+- https://github.com/caderek/aocrunner
+- Revisar las normas de uso de la api

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node --esm cli.ts"
+    "start": "ts-node src/boilerplateDay.ts",
+    "submit": "ts-node src/submitSolution.ts"
   },
   "type": "module",
   "keywords": [],

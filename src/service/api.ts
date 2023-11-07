@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import { logErrorMessage, logInfoMessage, logSuccessMessage } from "./log.js";
-import kleur from "kleur";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,9 +7,10 @@ dotenv.config();
 const API_URL = process.env.AOC_API ?? "https://adventofcode.com";
 
 const apiRoutes = {
-  getInput: (day: number, year: number) => {
-    return `${API_URL}/${year}/day/${day}/input`;
-  },
+  getInput: (day: number, year: number) =>
+    `${API_URL}/${year}/day/${day}/input`,
+  sendSolution: (day: number, year: number) =>
+    `${API_URL}/${year}/day/${day}/answer`,
 };
 
 export async function getInput(year: number, day: number, path: string) {
@@ -35,6 +35,32 @@ export async function getInput(year: number, day: number, path: string) {
       logSuccessMessage(`Input for day ${day} saved!`);
     })
     .catch(handleErrors);
+}
+
+export async function sendSolution(
+  day: number,
+  year: number,
+  part: 1 | 2,
+  solution: number
+) {
+  return fetch(apiRoutes.sendSolution(day, year), {
+    headers: {
+      cookie: `session=${process.env.AOC_SESSION_KEY}`,
+      "content-type": "application/x-www-form-urlencoded",
+    },
+    method: "POST",
+    body: `level=${part}&answer=${solution}`,
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error(String(res.status));
+      }
+
+      return res.text();
+    })
+    .then((body) => {
+      console.log(body);
+    });
 }
 
 function handleErrors(e: Error) {

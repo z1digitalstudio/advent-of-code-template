@@ -1,8 +1,10 @@
 import { copy } from "./service/copy.js";
-import { logErrorMessage } from "./service/log.js";
+import { logErrorMessage, logSuccessMessage } from "./service/log.js";
 import { getInput } from "./service/api.js";
 import path from "node:path";
+import fs from "node:fs";
 import dotenv from "dotenv";
+import { initConfig, CONFIG_PATH } from "./service/config.js";
 
 dotenv.config();
 
@@ -21,6 +23,13 @@ function boilerplateDay() {
 
   const dayNum = Number(DAY);
   const yearNum = Number(YEAR);
+  const configCreated =
+    fs.existsSync(CONFIG_PATH) && fs.statSync(CONFIG_PATH).size > 0;
+
+  if (!configCreated) {
+    initConfig();
+    logSuccessMessage("Results JSON initialized");
+  }
 
   if (dayNum < 1 || dayNum > 25) {
     logErrorMessage("Wrong day - chose day between 1 and 25");
@@ -28,7 +37,7 @@ function boilerplateDay() {
   }
 
   const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
-  const templateDirName = "template/js";
+  const templateDirName = "src/template/js";
   const inputPath = path.join(dayDirName, "input.txt");
 
   copy(templateDirName, dayDirName);
