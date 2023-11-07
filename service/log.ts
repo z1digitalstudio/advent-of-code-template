@@ -5,7 +5,7 @@ export function logErrorMessage(message: string) {
 }
 
 export function logInfoMessage(message: string) {
-  console.log(`${kleur.white().bgYellow(" INFO ")} ${kleur.yellow(message)}`);
+  console.log(`${kleur.black().bgWhite(" INFO ")} ${kleur.white(message)}`);
 }
 
 export function logSuccessMessage(message: string) {

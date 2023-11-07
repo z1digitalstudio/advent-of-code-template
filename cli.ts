@@ -9,12 +9,14 @@ dotenv.config();
 const DAY = process.argv[2];
 const YEAR = process.env.YEAR;
 
-function generateDay() {
+function boilerplateDay() {
   if (DAY === undefined) {
     logErrorMessage("No day specified");
+    return;
   }
   if (YEAR === undefined) {
     logErrorMessage("Check that YEAR has been added to .env file");
+    return;
   }
 
   const dayNum = Number(DAY);
@@ -22,9 +24,10 @@ function generateDay() {
 
   if (dayNum < 1 || dayNum > 25) {
     logErrorMessage("Wrong day - chose day between 1 and 25");
+    return;
   }
 
-  const dayDirName = `day-${DAY.padStart(2, "0")}`;
+  const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
   const templateDirName = "template/js";
   const inputPath = path.join(dayDirName, "input.txt");
 
@@ -33,4 +36,4 @@ function generateDay() {
   getInput(yearNum, dayNum, inputPath);
 }
 
-generateDay();
+boilerplateDay();
