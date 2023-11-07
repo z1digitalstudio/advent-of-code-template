@@ -1,0 +1,16 @@
+{
+  "name": "advent-of-code-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node cli.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kleur": "^4.1.5"
+  }
+}
