@@ -1,13 +1,29 @@
 import fs from "node:fs";
-import { logErrorMessage, logInfoMessage, logSuccessMessage } from "./log.js";
+import {
+  logErrorMessage,
+  logInfoMessage,
+  logSuccessMessage,
+  logWarningMessage,
+} from "./log.js";
 import dotenv from "dotenv";
 import { JSDOM } from "jsdom";
 import { checkFileExists } from "./checkFileExists.js";
-import kleur from "kleur";
 
 dotenv.config();
 
 const API_URL = process.env.AOC_API ?? "https://adventofcode.com";
+
+export function checkAPIAvailability() {
+  if (!process.env.AOC_SESSION_KEY) {
+    logInfoMessage(
+      "API FEATURES OPTED OUT\n" +
+        "Session key is missing in .env file, therefore API features are not available\n" +
+        "If you want to opt-in, add valur for env var AOC_SESSION_KEY \n"
+    );
+    return false;
+  }
+  return true;
+}
 
 const apiRoutes = {
   getInput: (day: number, year: number) =>
@@ -78,17 +94,20 @@ export async function sendSolution({
         return true;
       } else if (info.includes("That's not the right answer")) {
         logErrorMessage(`WRONG ANSWER\n`);
-        console.log(`\n${info}\n`);
+        console.log(`${info}\n`);
       } else if (info.includes("You gave an answer too recently")) {
-        console.log("Status:", kleur.yellow("TO SOON"));
+        logWarningMessage(`TOO SOON\n`);
+        console.log(`${info}\n`);
       } else if (
         info.includes("You don't seem to be solving the right level")
       ) {
         logInfoMessage(`Part ${part} was already completed or locked\n`);
       } else {
-        console.log("Status:", kleur.red("UNKNOWN RESPONSE\n"));
-        console.log(`\n${info}\n`);
+        logErrorMessage("UNKNOWN RESPONSE\n");
+        console.log(`${info}\n`);
       }
+
+      return false;
     });
 }
 

@@ -1,5 +1,5 @@
 import path from "path";
-import { sendSolution } from "./service/api.js";
+import { checkAPIAvailability, sendSolution } from "./service/api.js";
 import { checkFileExists } from "./service/checkFileExists.js";
 import { readConfig } from "./service/config.js";
 import {
@@ -12,6 +12,10 @@ const DAY = process.argv[2];
 const config = getConfig();
 
 async function submit() {
+  if (!checkAPIAvailability()) {
+    logErrorMessage("Not available");
+    return;
+  }
   if (DAY === undefined) {
     logErrorMessage("No day specified");
     return;
@@ -21,19 +25,22 @@ async function submit() {
 
   const parts = config.days[dayNum - 1];
 
-  Object.entries(parts).forEach(async ([partKey, part]) => {
+  for (const index in Object.entries(parts)) {
+    const [key, part] = Object.entries(parts)[index];
+    const partNum = Number(index) + 1 === 1 ? 1 : 2;
+
     if (!part.solved) {
-      logInfoMessage(`Trying to solve ${partKey}...`);
+      logInfoMessage(`Trying to solve ${key}...`);
       await checkSolution({
         day: dayNum,
         year: config.year,
-        part: 1,
+        part: partNum,
         solution: part.result,
       });
     } else {
-      logSuccessMessage(`${partKey} was already solved. You won a star ⭐️`);
+      logSuccessMessage(`${key} was already solved. You won a star ⭐️`);
     }
-  });
+  }
 }
 
 async function checkSolution({
@@ -54,20 +61,21 @@ async function checkSolution({
 
   if (dayData.solved) {
     logInfoMessage(`${puzzleName} already solved!`);
-    return true;
+    return;
   }
 
   if (!dayData.result) {
     logErrorMessage(`${puzzleName} not solved yet. Skipping`);
-    return false;
+    return;
   }
 
   if (dayData.attempts.includes(solution)) {
     logErrorMessage(`You already tried this solution. Skipping.`);
-    return false;
+    return;
   }
 
-  await sendSolution({ day, year, part, solution });
+  const isSolved = await sendSolution({ day, year, part, solution });
+  console.log({ isSolved });
 }
 
 function getConfig() {

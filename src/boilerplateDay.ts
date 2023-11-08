@@ -1,6 +1,10 @@
 import { copy } from "./service/copy.js";
-import { logErrorMessage, logSuccessMessage } from "./service/log.js";
-import { getInput } from "./service/api.js";
+import {
+  logErrorMessage,
+  logSuccessMessage,
+  logWarningMessage,
+} from "./service/log.js";
+import { checkAPIAvailability, getInput } from "./service/api.js";
 import path from "node:path";
 import dotenv from "dotenv";
 import { initConfig, CONFIG_PATH } from "./service/config.js";
@@ -41,7 +45,13 @@ function boilerplateDay() {
 
   copy(templateDirName, dayDirName);
 
-  getInput(yearNum, dayNum, inputPath);
+  logSuccessMessage(`Boilerplate created at /${dayDirName}}\n`);
+
+  if (checkAPIAvailability()) {
+    getInput(yearNum, dayNum, inputPath);
+  } else {
+    logWarningMessage(`Input was not fetched automatically`);
+  }
 }
 
 boilerplateDay();
