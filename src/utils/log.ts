@@ -17,3 +17,11 @@ export function logWarningMessage(message: string) {
     `${kleur.black().bgYellow(" WARNING ")} ${kleur.yellow(message)}`
   );
 }
+
+export function logCurrentResult(part: number, message: string) {
+  console.log(
+    `${kleur.black().bgYellow(` ★ PART ${part} `)} ${kleur.yellow(
+      `Current result: ${kleur.bold(message)}`
+    )}`
+  );
+}
