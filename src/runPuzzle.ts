@@ -20,11 +20,12 @@ const dayFilePath = path.join(
   "index.js"
 );
 
+const currentDir = path.dirname(new URL(import.meta.url).pathname);
+const relativePath = path.relative(currentDir, dayFilePath);
+
 const saveSolutions = async () => {
   try {
-    const { part1, part2 } = await import(
-      `../puzzles/day-${DAY.padStart(2, "0")}/index.js?t=${Date.now()}`
-    );
+    const { part1, part2 } = await import(`${relativePath}?t=${Date.now()}`);
     const solutionPart1 = part1(1);
     const solutionPart2 = part2(1);
 
