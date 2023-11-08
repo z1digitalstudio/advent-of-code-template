@@ -1,6 +1,11 @@
 import path from "node:path";
-import { logErrorMessage } from "./utils/log.js";
+import {
+  logCurrentResult,
+  logErrorMessage,
+  logInfoMessage,
+} from "./utils/log.js";
 import chokidar from "chokidar";
+import { readProgress, saveProgress } from "./service/progress/index.js";
 
 const DAY = process.argv[2];
 
@@ -15,23 +20,43 @@ const dayFilePath = path.join(
   "index.js"
 );
 
-const executePuzzle = async () => {
+const saveSolutions = async () => {
   try {
     const { part1, part2 } = await import(
-      `../puzzles/day-${DAY.padStart(2, "0")}/index.js`
+      `../puzzles/day-${DAY.padStart(2, "0")}/index.js?t=${Date.now()}`
     );
-    console.log({ part1, part2 });
+    const solutionPart1 = part1(1);
+    const solutionPart2 = part2(1);
+
+    logCurrentResult(1, solutionPart1);
+    logCurrentResult(2, solutionPart2);
+
+    const process = readProgress();
+    const dayNum = Number(DAY);
+    const dayData = process.days[dayNum - 1];
+
+    if (dayData.part1.result !== solutionPart1) {
+      dayData.part1.result = solutionPart1;
+      saveProgress(process);
+    }
+
+    if (dayData.part2.result !== solutionPart2) {
+      dayData.part2.result = solutionPart2;
+      saveProgress(process);
+    }
   } catch (err) {
-    console.log("ERROR", err);
+    logErrorMessage("UNEXPECTED ERROR\n" + err);
   }
 };
 
-executePuzzle();
+saveSolutions();
 
-console.log("Watching file:", dayFilePath);
+const watcher = chokidar.watch(dayFilePath, { ignoreInitial: true });
 
-const watcher = chokidar.watch(dayFilePath);
 watcher.on("change", () => {
-  console.log(`Restarting...`);
-  executePuzzle();
+  console.clear();
+
+  logInfoMessage(`Watching file: ${dayFilePath}...\n\n`);
+  logInfoMessage(`Restarting...\n\n`);
+  saveSolutions();
 });
