@@ -4,7 +4,7 @@ import {
   logInfoMessage,
   logSuccessMessage,
   logWarningMessage,
-} from "./log.js";
+} from "../utils/log.js";
 import dotenv from "dotenv";
 import { JSDOM } from "jsdom";
 import { checkFileExists } from "../utils/checkFileExists.js";

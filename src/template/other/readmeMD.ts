@@ -1,4 +1,4 @@
-import { Progress } from "../../progress/types.js";
+import { Progress } from "../../service/progress/types.js";
 import toFixed from "../../utils/toFixed.js";
 import { stripIndents } from "common-tags";
 

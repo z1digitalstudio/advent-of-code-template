@@ -6,13 +6,13 @@ import {
   initProgress,
   readProgress,
   saveProgress,
-} from "./progress/index.js";
+} from "./service/progress/index.js";
 import {
   logErrorMessage,
   logInfoMessage,
   logSuccessMessage,
-} from "./service/log.js";
-import { Progress } from "./progress/types.js";
+} from "./utils/log.js";
+import { Progress } from "./service/progress/types.js";
 import readmeMD from "./template/other/readmeMD.js";
 
 import fs from "node:fs";

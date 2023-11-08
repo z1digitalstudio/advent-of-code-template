@@ -3,11 +3,11 @@ import {
   logErrorMessage,
   logSuccessMessage,
   logWarningMessage,
-} from "./service/log.js";
+} from "./utils/log.js";
 import { checkAPIAvailability, getInput } from "./service/api.js";
 import path from "node:path";
 import dotenv from "dotenv";
-import { initProgress, CONFIG_PATH } from "./progress/index.js";
+import { initProgress, CONFIG_PATH } from "./service/progress/index.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
 import readmeDayMD from "./template/other/readmeDayMD.js";
 import fs from "node:fs";

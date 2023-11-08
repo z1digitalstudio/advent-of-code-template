@@ -1,8 +1,8 @@
 import { checkAPIAvailability, sendSolution } from "./service/api.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
-import { readProgress, saveProgress } from "./progress/index.js";
-import { logErrorMessage, logInfoMessage } from "./service/log.js";
-import { Progress } from "./progress/types.js";
+import { readProgress, saveProgress } from "./service/progress/index.js";
+import { logErrorMessage, logInfoMessage } from "./utils/log.js";
+import { Progress } from "./service/progress/types.js";
 import { updateReadme } from "./updateReadme.js";
 
 const DAY = process.argv[2];
