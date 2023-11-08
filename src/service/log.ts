@@ -9,5 +9,11 @@ export function logInfoMessage(message: string) {
 }
 
 export function logSuccessMessage(message: string) {
-  console.log(`${kleur.white().bgGreen(" INFO ")} ${kleur.green(message)}`);
+  console.log(`${kleur.white().bgGreen(" SUCCESS ")} ${kleur.green(message)}`);
+}
+
+export function logWarningMessage(message: string) {
+  console.log(
+    `${kleur.black().bgYellow(" WARNING ")} ${kleur.yellow(message)}`
+  );
 }
