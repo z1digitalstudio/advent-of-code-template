@@ -1,7 +1,7 @@
 import path from "path";
 import { checkAPIAvailability, sendSolution } from "./service/api.js";
 import { checkFileExists } from "./service/checkFileExists.js";
-import { readConfig } from "./service/config.js";
+import { readConfig, saveConfig } from "./service/config.js";
 import {
   logErrorMessage,
   logInfoMessage,
@@ -38,7 +38,7 @@ async function submit() {
         solution: part.result,
       });
     } else {
-      logSuccessMessage(`${key} was already solved. You won a star ⭐️`);
+      logInfoMessage(`Part ${partNum} was already solved. You won a star ⭐️`);
     }
   }
 }
@@ -75,7 +75,12 @@ async function checkSolution({
   }
 
   const isSolved = await sendSolution({ day, year, part, solution });
-  console.log({ isSolved });
+
+  if (isSolved) {
+    //TODO updateReadme
+    dayData.solved = true;
+    saveConfig(config);
+  }
 }
 
 function getConfig() {
