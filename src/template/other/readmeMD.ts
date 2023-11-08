@@ -1,9 +1,9 @@
-import { Config } from "../../types/common.js";
+import { Progress } from "../../progress/types.js";
 import toFixed from "../../utils/toFixed.js";
 import { stripIndents } from "common-tags";
 
-const renderDayBadges = (config: Config) => {
-  return config.days
+const renderDayBadges = (progress: Progress) => {
+  return progress.days
     .map(({ part1, part2 }, index) => {
       const day = String(index + 1).padStart(2, "0");
 
@@ -25,11 +25,11 @@ const renderDayBadges = (config: Config) => {
     .join("\n");
 };
 
-const renderResults = (config: Config) => {
+const renderResults = (progress: Progress) => {
   let totalTime = 0;
   let totalStars = 0;
 
-  const results = config.days
+  const results = progress.days
     .map(({ part1, part2 }, index) => {
       const day = String(index + 1).padStart(2, "0");
 
@@ -75,9 +75,9 @@ const renderResults = (config: Config) => {
   return [results, summary].join("\n\n");
 };
 
-const readmeMD = (year: number, config: Config) => {
-  const dayBadges = renderDayBadges(config);
-  const results = renderResults(config);
+const readmeMD = (year: number, progress: Progress) => {
+  const dayBadges = renderDayBadges(progress);
+  const results = renderResults(progress);
 
   return stripIndents`
     <!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->

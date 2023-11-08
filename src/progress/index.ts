@@ -1,10 +1,10 @@
 import fs from "node:fs";
-import { Config } from "../types/common.js";
+import { Progress } from "./types.js";
 
 export const CONFIG_PATH = ".aoc.data.json";
 
-const initConfig = ({ year }: { year: number }) => {
-  const config: Config = {
+const initProgress = ({ year }: { year: number }) => {
+  const config: Progress = {
     year,
     days: new Array(25).fill(0).map((_, i) => ({
       part1: {
@@ -22,16 +22,16 @@ const initConfig = ({ year }: { year: number }) => {
     })),
   };
 
-  saveConfig(config);
+  saveProgress(config);
 };
 
-const readConfig = (): Config => {
+const readProgress = (): Progress => {
   return JSON.parse(fs.readFileSync(CONFIG_PATH).toString());
 };
 
-const saveConfig = (config: Config) => {
-  const data = JSON.stringify(config, null, 2);
+const saveProgress = (progress: Progress) => {
+  const data = JSON.stringify(progress, null, 2);
   fs.writeFileSync(CONFIG_PATH, data);
 };
 
-export { saveConfig, readConfig, initConfig };
+export { saveProgress, readProgress, initProgress };

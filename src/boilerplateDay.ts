@@ -7,7 +7,7 @@ import {
 import { checkAPIAvailability, getInput } from "./service/api.js";
 import path from "node:path";
 import dotenv from "dotenv";
-import { initConfig, CONFIG_PATH } from "./service/config.js";
+import { initProgress, CONFIG_PATH } from "./progress/index.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
 import readmeDayMD from "./template/other/readmeDayMD.js";
 import fs from "node:fs";
@@ -32,7 +32,7 @@ function boilerplateDay() {
   const configCreated = checkFileExists(CONFIG_PATH);
 
   if (!configCreated) {
-    initConfig({ year: yearNum });
+    initProgress({ year: yearNum });
     logSuccessMessage("Results JSON initialized");
   }
 

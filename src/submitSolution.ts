@@ -1,15 +1,15 @@
 import path from "path";
 import { checkAPIAvailability, sendSolution } from "./service/api.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
-import { readConfig, saveConfig } from "./service/config.js";
+import { readProgress, saveProgress } from "./progress/index.js";
 import { logErrorMessage, logInfoMessage } from "./service/log.js";
-import { Config } from "./types/common.js";
+import { Progress } from "./progress/types.js";
 import readmeMD from "./template/other/readmeMD.js";
 
 import fs from "node:fs";
 
 const DAY = process.argv[2];
-const config = getConfig();
+const progress = getProgress();
 
 async function submit() {
   if (!checkAPIAvailability()) {
@@ -23,7 +23,7 @@ async function submit() {
 
   const dayNum = Number(DAY);
 
-  const parts = config.days[dayNum - 1];
+  const parts = progress.days[dayNum - 1];
 
   for (const index in Object.entries(parts)) {
     const [key, part] = Object.entries(parts)[index];
@@ -33,9 +33,10 @@ async function submit() {
       logInfoMessage(`Trying to solve ${key}...`);
       await checkSolution({
         day: dayNum,
-        year: config.year,
+        year: progress.year,
         part: partNum,
         solution: part.result,
+        progress,
       });
     } else {
       logInfoMessage(`Part ${partNum} was already solved. You won a star ⭐️`);
@@ -48,15 +49,16 @@ async function checkSolution({
   year,
   part,
   solution,
+  progress,
 }: {
   day: number;
   year: number;
   part: 1 | 2;
   solution: any;
+  progress: Progress;
 }) {
-  const config = readConfig();
   const partStr = part === 1 ? "part1" : "part2";
-  const dayData = config.days[day - 1][partStr];
+  const dayData = progress.days[day - 1][partStr];
   const puzzleName = `Puzzle for day ${day} - part ${part}`;
 
   if (dayData.solved) {
@@ -77,13 +79,13 @@ async function checkSolution({
   const isSolved = await sendSolution({ day, year, part, solution });
 
   if (isSolved) {
-    updateReadme(year, config);
+    updateReadme(year, progress);
     dayData.solved = true;
-    saveConfig(config);
+    saveProgress(progress);
   }
 }
 
-function getConfig() {
+function getProgress() {
   const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
 
   if (!checkFileExists(dayDirName)) {
@@ -95,11 +97,11 @@ function getConfig() {
     throw new Error("Missing config, .aoc.config.json not created");
   }
 
-  return readConfig();
+  return readProgress();
 }
 
-function updateReadme(year: number, config: Config) {
-  const readmeContent = readmeMD(year, config);
+function updateReadme(year: number, progress: Progress) {
+  const readmeContent = readmeMD(year, progress);
   const readmePath = path.join("", "README.md");
 
   fs.unlinkSync(readmePath);
