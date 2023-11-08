@@ -1,15 +1,21 @@
 {
-  "name": "advent-of-code-starter",
+  "name": "z1-advent-of-code-template",
   "version": "1.0.0",
-  "description": "",
+  "description": "Z1 Template for Advent of Code",
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/boilerplateDay.ts",
     "submit": "ts-node src/submitSolution.ts"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "advent of code",
+    "aoc",
+    "javascript",
+    "typescript",
+    "template"
+  ],
+  "author": "mariasimo@z1.digital",
   "license": "ISC",
   "dependencies": {
     "kleur": "^4.1.5"
