@@ -75,9 +75,10 @@ const renderResults = (progress: Progress) => {
   return [results, summary].join("\n\n");
 };
 
-const readmeMD = (year: number, progress: Progress) => {
+const readmeMD = (progress: Progress) => {
   const dayBadges = renderDayBadges(progress);
   const results = renderResults(progress);
+  const year = progress.year;
 
   return stripIndents`
     <!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->

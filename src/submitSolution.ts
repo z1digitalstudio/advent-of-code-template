@@ -1,12 +1,9 @@
-import path from "path";
 import { checkAPIAvailability, sendSolution } from "./service/api.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
 import { readProgress, saveProgress } from "./progress/index.js";
 import { logErrorMessage, logInfoMessage } from "./service/log.js";
 import { Progress } from "./progress/types.js";
-import readmeMD from "./template/other/readmeMD.js";
-
-import fs from "node:fs";
+import { updateReadme } from "./updateReadme.js";
 
 const DAY = process.argv[2];
 const progress = getProgress();
@@ -79,7 +76,7 @@ async function checkSolution({
   const isSolved = await sendSolution({ day, year, part, solution });
 
   if (isSolved) {
-    updateReadme(year, progress);
+    updateReadme(progress);
     dayData.solved = true;
     saveProgress(progress);
   }
@@ -98,14 +95,6 @@ function getProgress() {
   }
 
   return readProgress();
-}
-
-function updateReadme(year: number, progress: Progress) {
-  const readmeContent = readmeMD(year, progress);
-  const readmePath = path.join("", "README.md");
-
-  fs.unlinkSync(readmePath);
-  fs.writeFileSync(readmePath, readmeContent);
 }
 
 submit();
