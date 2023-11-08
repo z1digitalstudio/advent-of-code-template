@@ -76,9 +76,9 @@ async function checkSolution({
   const isSolved = await sendSolution({ day, year, part, solution });
 
   if (isSolved) {
-    updateReadme(progress);
     dayData.solved = true;
     saveProgress(progress);
+    updateReadme(progress);
   }
 }
 
