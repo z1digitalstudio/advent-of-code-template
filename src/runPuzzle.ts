@@ -52,9 +52,7 @@ const saveSolutions = async () => {
 
 saveSolutions();
 
-const watcher = chokidar.watch(dayFilePath, { ignoreInitial: true });
-
-watcher.on("change", () => {
+chokidar.watch(dayFilePath).on("change", () => {
   console.clear();
 
   logInfoMessage(`Watching file: ${dayFilePath}...\n\n`);
