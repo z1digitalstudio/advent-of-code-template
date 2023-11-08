@@ -6,5 +6,6 @@ type DayConfig = {
 };
 
 export type Config = {
+  year: number;
   days: { part1: DayConfig; part2: DayConfig }[];
 };

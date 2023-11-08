@@ -5,6 +5,7 @@ import path from "node:path";
 import fs from "node:fs";
 import dotenv from "dotenv";
 import { initConfig, CONFIG_PATH } from "./service/config.js";
+import { checkFileExists } from "./service/checkFileExists.js";
 
 dotenv.config();
 
@@ -23,11 +24,10 @@ function boilerplateDay() {
 
   const dayNum = Number(DAY);
   const yearNum = Number(YEAR);
-  const configCreated =
-    fs.existsSync(CONFIG_PATH) && fs.statSync(CONFIG_PATH).size > 0;
+  const configCreated = checkFileExists(CONFIG_PATH);
 
   if (!configCreated) {
-    initConfig();
+    initConfig({ year: yearNum });
     logSuccessMessage("Results JSON initialized");
   }
 

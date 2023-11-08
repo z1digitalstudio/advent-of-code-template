@@ -1,38 +1,82 @@
-// coger el día de los argumentos
-// coger las soluciones del dia correspondiente
-// submit part 1 -> dar resultado
-// submit part 2 -> dar resultado
-
-import { copy } from "./service/copy.js";
-import { logErrorMessage } from "./service/log.js";
-import { getInput } from "./service/api.js";
-import path from "node:path";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { sendSolution } from "./service/api.js";
+import { checkFileExists } from "./service/checkFileExists.js";
+import { readConfig } from "./service/config.js";
+import { logErrorMessage, logInfoMessage } from "./service/log.js";
 
 const DAY = process.argv[2];
-const YEAR = process.env.YEAR;
+const config = getConfig();
 
-function submit() {
+async function submit() {
   if (DAY === undefined) {
     logErrorMessage("No day specified");
     return;
   }
-  if (YEAR === undefined) {
-    logErrorMessage("Check that YEAR has been added to .env file");
-    return;
-  }
 
   const dayNum = Number(DAY);
-  const yearNum = Number(YEAR);
 
-  if (dayNum < 1 || dayNum > 25) {
-    logErrorMessage("Wrong day - chose day between 1 and 25");
-    return;
+  const { part1, part2 } = config.days[dayNum - 1];
+
+  if (!part1.solved) {
+    await checkSolution({
+      day: dayNum,
+      year: config.year,
+      part: 1,
+      solution: part1.result,
+    });
+  }
+  if (!part2.solved) {
+    await checkSolution({
+      day: dayNum,
+      year: config.year,
+      part: 2,
+      solution: part2.result,
+    });
   }
 }
 
-function getSolutions(day: number, year: number) {}
+async function checkSolution({
+  day,
+  year,
+  part,
+  solution,
+}: {
+  day: number;
+  year: number;
+  part: 1 | 2;
+  solution: any;
+}) {
+  const config = readConfig();
+  const partStr = part === 1 ? "part1" : "part2";
+  const dayData = config.days[day - 1][partStr];
+  const puzzleName = `Puzzle for day ${day} - part ${part}`;
+
+  if (dayData.solved) {
+    logInfoMessage(`${puzzleName} already solved!`);
+    return true;
+  }
+
+  if (!dayData.result) {
+    logErrorMessage(`${puzzleName} not solved yet. Skipping`);
+    return false;
+  }
+
+  if (dayData.attempts.includes(solution)) {
+    logErrorMessage(`You already tried this solution. Skipping.`);
+    return false;
+  }
+
+  await sendSolution({ day, year, part, solution });
+}
+
+function getConfig() {
+  if (!checkFileExists(`puzzles/day${DAY.padStart(2, "0")}`)) {
+    logErrorMessage(
+      "Puzzle has not been started.\n" + `Run \`pnpm start ${DAY}\`\n\n`
+    );
+    throw new Error("Missing config, .aoc.config.json not created");
+  }
+
+  return readConfig();
+}
 
 submit();

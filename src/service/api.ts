@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import { logErrorMessage, logInfoMessage, logSuccessMessage } from "./log.js";
 import dotenv from "dotenv";
+import { JSDOM } from "jsdom";
+import { checkFileExists } from "./checkFileExists.js";
 
 dotenv.config();
 
@@ -14,7 +16,7 @@ const apiRoutes = {
 };
 
 export async function getInput(year: number, day: number, path: string) {
-  if (fs.existsSync(path) && fs.statSync(path).size > 0) {
+  if (checkFileExists(path)) {
     return;
   }
 
@@ -37,12 +39,17 @@ export async function getInput(year: number, day: number, path: string) {
     .catch(handleErrors);
 }
 
-export async function sendSolution(
-  day: number,
-  year: number,
-  part: 1 | 2,
-  solution: number
-) {
+export async function sendSolution({
+  day,
+  year,
+  part,
+  solution,
+}: {
+  day: number;
+  year: number;
+  part: 1 | 2;
+  solution: number;
+}) {
   return fetch(apiRoutes.sendSolution(day, year), {
     headers: {
       cookie: `session=${process.env.AOC_SESSION_KEY}`,
@@ -59,7 +66,8 @@ export async function sendSolution(
       return res.text();
     })
     .then((body) => {
-      console.log(body);
+      const mainNode = new JSDOM(body).window.document.querySelector("main");
+      console.log(mainNode);
     });
 }
 
@@ -76,11 +84,9 @@ function handleErrors(e: Error) {
     logErrorMessage("Challenge not found \n\n");
   } else {
     logErrorMessage(
-      "UNEXPECTED ERROR\nPlease check your internet connection.\n\nIf you think it's a bug, contact organizers"
+      "UNEXPECTED ERROR\nPlease check your internet connection and retry.\n\nIf you think it's a bug, contact organizers"
     );
 
     console.log(e);
   }
-
-  return;
 }
