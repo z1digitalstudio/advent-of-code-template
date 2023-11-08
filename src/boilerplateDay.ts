@@ -1,4 +1,4 @@
-import { copy } from "./service/copy.js";
+import { copy } from "./utils/copy.js";
 import {
   logErrorMessage,
   logSuccessMessage,
@@ -8,7 +8,7 @@ import { checkAPIAvailability, getInput } from "./service/api.js";
 import path from "node:path";
 import dotenv from "dotenv";
 import { initConfig, CONFIG_PATH } from "./service/config.js";
-import { checkFileExists } from "./service/checkFileExists.js";
+import { checkFileExists } from "./utils/checkFileExists.js";
 import readmeDayMD from "./template/other/readmeDayMD.js";
 import fs from "node:fs";
 

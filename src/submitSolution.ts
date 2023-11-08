@@ -1,12 +1,12 @@
 import path from "path";
 import { checkAPIAvailability, sendSolution } from "./service/api.js";
-import { checkFileExists } from "./service/checkFileExists.js";
+import { checkFileExists } from "./utils/checkFileExists.js";
 import { readConfig, saveConfig } from "./service/config.js";
-import {
-  logErrorMessage,
-  logInfoMessage,
-  logSuccessMessage,
-} from "./service/log.js";
+import { logErrorMessage, logInfoMessage } from "./service/log.js";
+import { Config } from "./types/common.js";
+import readmeMD from "./template/other/readmeMD.js";
+
+import fs from "node:fs";
 
 const DAY = process.argv[2];
 const config = getConfig();
@@ -77,7 +77,7 @@ async function checkSolution({
   const isSolved = await sendSolution({ day, year, part, solution });
 
   if (isSolved) {
-    //TODO updateReadme
+    updateReadme(year, config);
     dayData.solved = true;
     saveConfig(config);
   }
@@ -96,6 +96,14 @@ function getConfig() {
   }
 
   return readConfig();
+}
+
+function updateReadme(year: number, config: Config) {
+  const readmeContent = readmeMD(year, config);
+  const readmePath = path.join("", "README.md");
+
+  fs.unlinkSync(readmePath);
+  fs.writeFileSync(readmePath, readmeContent);
 }
 
 submit();
