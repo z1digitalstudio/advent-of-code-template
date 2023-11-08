@@ -50,7 +50,7 @@ function boilerplateDay() {
   copy(templateDirName, dayDirName);
   fs.writeFileSync(readmePath, readmeContent);
 
-  logSuccessMessage(`Boilerplate created at /${dayDirName}}\n`);
+  logSuccessMessage(`Boilerplate created at /${dayDirName}\n`);
 
   if (checkAPIAvailability()) {
     getInput(yearNum, dayNum, inputPath);
