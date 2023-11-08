@@ -1,7 +1,12 @@
+import path from "path";
 import { sendSolution } from "./service/api.js";
 import { checkFileExists } from "./service/checkFileExists.js";
 import { readConfig } from "./service/config.js";
-import { logErrorMessage, logInfoMessage } from "./service/log.js";
+import {
+  logErrorMessage,
+  logInfoMessage,
+  logSuccessMessage,
+} from "./service/log.js";
 
 const DAY = process.argv[2];
 const config = getConfig();
@@ -14,24 +19,21 @@ async function submit() {
 
   const dayNum = Number(DAY);
 
-  const { part1, part2 } = config.days[dayNum - 1];
+  const parts = config.days[dayNum - 1];
 
-  if (!part1.solved) {
-    await checkSolution({
-      day: dayNum,
-      year: config.year,
-      part: 1,
-      solution: part1.result,
-    });
-  }
-  if (!part2.solved) {
-    await checkSolution({
-      day: dayNum,
-      year: config.year,
-      part: 2,
-      solution: part2.result,
-    });
-  }
+  Object.entries(parts).forEach(async ([partKey, part]) => {
+    if (!part.solved) {
+      logInfoMessage(`Trying to solve ${partKey}...`);
+      await checkSolution({
+        day: dayNum,
+        year: config.year,
+        part: 1,
+        solution: part.result,
+      });
+    } else {
+      logSuccessMessage(`${partKey} was already solved. You won a star ⭐️`);
+    }
+  });
 }
 
 async function checkSolution({
@@ -69,9 +71,13 @@ async function checkSolution({
 }
 
 function getConfig() {
-  if (!checkFileExists(`puzzles/day${DAY.padStart(2, "0")}`)) {
+  const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
+
+  if (!checkFileExists(dayDirName)) {
     logErrorMessage(
-      "Puzzle has not been started.\n" + `Run \`pnpm start ${DAY}\`\n\n`
+      "Cannot submit solution\n" +
+        "This puzzle has not been started yet.\n" +
+        `Run \`pnpm start ${DAY}\`\n\n`
     );
     throw new Error("Missing config, .aoc.config.json not created");
   }

@@ -3,6 +3,7 @@ import { logErrorMessage, logInfoMessage, logSuccessMessage } from "./log.js";
 import dotenv from "dotenv";
 import { JSDOM } from "jsdom";
 import { checkFileExists } from "./checkFileExists.js";
+import kleur from "kleur";
 
 dotenv.config();
 
@@ -67,7 +68,27 @@ export async function sendSolution({
     })
     .then((body) => {
       const mainNode = new JSDOM(body).window.document.querySelector("main");
-      console.log(mainNode);
+      const info =
+        mainNode !== null
+          ? (mainNode.textContent as string).replace(/\[.*\]/, "").trim()
+          : "Can't find the main element";
+
+      if (info.includes("That's the right answer")) {
+        logSuccessMessage(`Part ${part} solved! You won a star ⭐️`);
+        return true;
+      } else if (info.includes("That's not the right answer")) {
+        logErrorMessage(`WRONG ANSWER\n`);
+        console.log(`\n${info}\n`);
+      } else if (info.includes("You gave an answer too recently")) {
+        console.log("Status:", kleur.yellow("TO SOON"));
+      } else if (
+        info.includes("You don't seem to be solving the right level")
+      ) {
+        logInfoMessage(`Part ${part} was already completed or locked\n`);
+      } else {
+        console.log("Status:", kleur.red("UNKNOWN RESPONSE\n"));
+        console.log(`\n${info}\n`);
+      }
     });
 }
 

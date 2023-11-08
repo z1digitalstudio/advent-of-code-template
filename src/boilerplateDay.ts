@@ -2,7 +2,6 @@ import { copy } from "./service/copy.js";
 import { logErrorMessage, logSuccessMessage } from "./service/log.js";
 import { getInput } from "./service/api.js";
 import path from "node:path";
-import fs from "node:fs";
 import dotenv from "dotenv";
 import { initConfig, CONFIG_PATH } from "./service/config.js";
 import { checkFileExists } from "./service/checkFileExists.js";
