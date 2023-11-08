@@ -9,6 +9,8 @@ import path from "node:path";
 import dotenv from "dotenv";
 import { initConfig, CONFIG_PATH } from "./service/config.js";
 import { checkFileExists } from "./service/checkFileExists.js";
+import readmeDayMD from "./template/other/readmeDayMD.js";
+import fs from "node:fs";
 
 dotenv.config();
 
@@ -42,8 +44,11 @@ function boilerplateDay() {
   const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
   const templateDirName = "src/template/js";
   const inputPath = path.join(dayDirName, "input.txt");
+  const readmePath = path.join(dayDirName, "README.md");
+  const readmeContent = readmeDayMD(yearNum, dayNum);
 
   copy(templateDirName, dayDirName);
+  fs.writeFileSync(readmePath, readmeContent);
 
   logSuccessMessage(`Boilerplate created at /${dayDirName}}\n`);
 
