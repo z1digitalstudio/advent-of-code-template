@@ -1,4 +1,4 @@
-const readmeDayMD = (year: number, day: number) => {
+export const readmeDayMD = (year: number, day: number) => {
   return `
 # 🎄 Advent of Code ${year} - day ${day} 🎄
 
@@ -11,5 +11,3 @@ Task description: [link](https://adventofcode.com/${year}/day/${day})
 ... 
   `;
 };
-
-export default readmeDayMD;

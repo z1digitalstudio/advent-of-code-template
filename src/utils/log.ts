@@ -9,7 +9,7 @@ export function logInfoMessage(message: string) {
 }
 
 export function logSuccessMessage(message: string) {
-  console.log(`${kleur.white().bgGreen(" SUCCESS ")} ${kleur.green(message)}`);
+  console.log(`${kleur.black().bgGreen(" SUCCESS ")} ${kleur.green(message)}`);
 }
 
 export function logWarningMessage(message: string) {

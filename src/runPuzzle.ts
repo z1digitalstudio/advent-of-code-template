@@ -26,6 +26,7 @@ const relativePath = path.relative(currentDir, dayFilePath);
 const saveSolutions = async () => {
   try {
     const { part1, part2 } = await import(`${relativePath}?t=${Date.now()}`);
+
     const solutionPart1 = part1(1);
     const solutionPart2 = part2(1);
 

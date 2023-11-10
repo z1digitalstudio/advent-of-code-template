@@ -1,13 +1,13 @@
 const parseInput = (rawInput) => rawInput;
 
-const part1 = (rawInput) => {
+export const part1 = (rawInput) => {
   const input = parseInput(rawInput);
 
-  return;
+  return 98743;
 };
 
-const part2 = (rawInput) => {
+export const part2 = (rawInput) => {
   const input = parseInput(rawInput);
 
-  return;
+  return 438773;
 };

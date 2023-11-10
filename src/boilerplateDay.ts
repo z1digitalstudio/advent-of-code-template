@@ -9,7 +9,8 @@ import path from "node:path";
 import dotenv from "dotenv";
 import { initProgress, CONFIG_PATH } from "./service/progress/index.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
-import readmeDayMD from "./template/other/readmeDayMD.js";
+import { readmeDayMD } from "./template/other/readmeDayMD.js";
+import { dayTest } from "./template/other/dayTest.js";
 import fs from "node:fs";
 
 dotenv.config();
@@ -44,11 +45,12 @@ function boilerplateDay() {
   const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
   const templateDirName = "src/template/js";
   const inputPath = path.join(dayDirName, "input.txt");
-  const readmePath = path.join(dayDirName, "README.md");
   const readmeContent = readmeDayMD(yearNum, dayNum);
+  const dailyTest = dayTest(dayNum);
 
   copy(templateDirName, dayDirName);
-  fs.writeFileSync(readmePath, readmeContent);
+  fs.writeFileSync(path.join(dayDirName, "README.md"), readmeContent);
+  fs.writeFileSync(path.join(dayDirName, "input.spec.js"), dailyTest);
 
   logSuccessMessage(`Boilerplate created at /${dayDirName}\n`);
 
