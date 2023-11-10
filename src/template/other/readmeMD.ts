@@ -1,5 +1,4 @@
 import { Progress } from "../../service/progress/types.js";
-import toFixed from "../../utils/toFixed.js";
 import { stripIndents } from "common-tags";
 
 const renderDayBadges = (progress: Progress) => {
@@ -25,59 +24,8 @@ const renderDayBadges = (progress: Progress) => {
     .join("\n");
 };
 
-const renderResults = (progress: Progress) => {
-  let totalTime = 0;
-  let totalStars = 0;
-
-  const results = progress.days
-    .map(({ part1, part2 }, index) => {
-      const day = String(index + 1).padStart(2, "0");
-
-      let timeBoth = 0;
-
-      if (part1.solved) {
-        totalStars++;
-        totalTime += part1.time ?? 0;
-        timeBoth += part1.time ?? 0;
-      }
-      if (part2.solved) {
-        totalStars++;
-        totalTime += part2.time ?? 0;
-        timeBoth += part2.time ?? 0;
-      }
-
-      if (day === "25" && part1.solved) {
-        totalStars++;
-      }
-
-      return stripIndents`
-      \`\`\`
-      Day ${day}
-      Time part 1: ${
-        part1.time !== null && part1.solved ? toFixed(part1.time) + "ms" : "-"
-      }
-      Time part 2: ${
-        part2.time !== null && part2.solved ? toFixed(part2.time) + "ms" : "-"
-      }
-      Both parts: ${timeBoth !== 0 ? toFixed(timeBoth) + "ms" : "-"}
-      \`\`\`
-    `;
-    })
-    .join("\n\n");
-
-  const summary = stripIndents`
-    \`\`\`
-    Total stars: ${totalStars}/50
-    Total time: ${toFixed(totalTime)}ms
-    \`\`\`
-  `;
-
-  return [results, summary].join("\n\n");
-};
-
 const readmeMD = (progress: Progress) => {
   const dayBadges = renderDayBadges(progress);
-  const results = renderResults(progress);
   const year = progress.year;
 
   return stripIndents`
@@ -121,6 +69,29 @@ const readmeMD = (progress: Progress) => {
     pnpm start 1
     \`\`\`
 
+    ## Run dev mode
+
+    \`\`\`
+    pnpm dev <day-number>
+    \`\`\`
+
+    Example:
+
+    \`\`\`
+    pnpm dev 1
+    \`\`\`
+
+    ## Run tests
+
+    \`\`\`
+    pnpm test
+    \`\`\`
+
+    Example:
+
+    \`\`\`
+    pnpm test
+    \`\`\`
 
     ## Send solutions
 
@@ -131,24 +102,16 @@ const readmeMD = (progress: Progress) => {
     Example:
 
     \`\`\`
-    pnpm start 2
+    pnpm start 1
     \`\`\`
 
     ---
 
-    ## Results
-
-    <!--RESULTS-->
-
-    ${results}
-
-    <!--/RESULTS-->
-
-    ---
-
     ✨🎄🎁🎄🎅🎄🎁🎄✨
+
+    [🔗 Template instructions](https://github.com/z1digitalstudio/advent-of-code-template)
   `;
 };
 
-export { renderDayBadges, renderResults };
+export { renderDayBadges };
 export default readmeMD;
