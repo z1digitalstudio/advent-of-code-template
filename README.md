@@ -44,9 +44,19 @@ The `/puzzles` directory will be your main working directory, containing all you
 
 You can customize this template to your liking by editing files at `/templates/js` directory.
 
-### Start working on your puzzle
+### Work on your puzzle
 
-You can run dev mode to have your solutions to the puzzle logged in the terminal.
+You can run dev mode in one terminal along with tests in other to work on your solution:
+
+```bash
+pnpm dev 1
+```
+
+```bash
+pnpm test
+```
+
+![work on your puzzle, screenshot of terminal](./images/screenshot.png)
 
 ### Send your solutions
 
@@ -56,7 +66,7 @@ Once you have a solution for the puzzle, you can check if is correct by running:
 pnpm submit 1
 ```
 
-If your solution is correct this README will be updated automatically with your progress ✨. But don't worry, you could still see instructions for use.
+If your solution is correct, you will see a message in the terminal and this README will be updated automatically to show your progress ✨.
 
 > This would be available _ONLY_ for users with an `AOC_SESSION_KEY`
 
@@ -69,6 +79,8 @@ You can [join](https://adventofcode.com/2022/leaderboard/private) Z1's private l
 ```
 
 Also, if you're a Z1 employee, you can register to the AoC internal event for a chance to redeem the stars you won for fantastic Z1 swag and become the ⭐️⭐️ **_Z1 Coder of the year_** ⭐️⭐️.
+
+Join channel `#z1-initiative-advent-of-code`
 
 ## Acknowledgements
 
