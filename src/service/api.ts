@@ -11,6 +11,11 @@ import { checkFileExists } from "../utils/checkFileExists.js";
 
 dotenv.config();
 
+type LeaderboardMember = {
+  name: string;
+  stars: number;
+};
+
 const API_URL = process.env.AOC_API ?? "https://adventofcode.com";
 
 export function checkAPIAvailability() {
@@ -31,7 +36,7 @@ const apiRoutes = {
   sendSolution: (day: number, year: number) =>
     `${API_URL}/${year}/day/${day}/answer`,
   getPrivateLeaderboard: (year: number) =>
-    `${API_URL}/${year}/leaderboard/private/view/3197226?order=stars`,
+    `${API_URL}/${year}/leaderboard/private/view/3197226.json?order=stars`,
 };
 
 export async function getInput(year: number, day: number, path: string) {
@@ -124,18 +129,18 @@ export async function getPrivateLeaderboard(year: number) {
         throw new Error(String(res.status));
       }
 
-      return res.text();
+      return res.json();
     })
-    .then((body) => {
-      const mainNode = new JSDOM(body).window.document.querySelectorAll(
-        ".privboard-row"
+    .then((data) => {
+      const leaderboardAdmin = "";
+      const members = (Object.values(data.members) as LeaderboardMember[]).map(
+        (row) => {
+          return { stars: row.stars, participant: row.name };
+        }
       );
-      const nodes = [...mainNode].map((item) => item.textContent);
-      nodes.shift();
-      nodes.pop();
-      return nodes.map((el) =>
-        String(el).replace(/\*/g, "").split("  ").filter(Boolean).slice(1)
-      );
+      return members
+        .filter((m) => m.participant !== leaderboardAdmin)
+        .sort((m1, m2) => (Number(m1.stars) > Number(m2.stars) ? -1 : 1));
     })
     .catch(handleErrors);
 }

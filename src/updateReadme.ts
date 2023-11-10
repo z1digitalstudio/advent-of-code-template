@@ -1,17 +1,11 @@
 import path from "path";
-import { checkAPIAvailability, sendSolution } from "./service/api.js";
 import { checkFileExists } from "./utils/checkFileExists.js";
 import {
   CONFIG_PATH,
   initProgress,
   readProgress,
-  saveProgress,
 } from "./service/progress/index.js";
-import {
-  logErrorMessage,
-  logInfoMessage,
-  logSuccessMessage,
-} from "./utils/log.js";
+import { logSuccessMessage } from "./utils/log.js";
 import { Progress } from "./service/progress/types.js";
 import readmeMD from "./template/other/readmeMD.js";
 
@@ -30,8 +24,8 @@ function getProgress() {
   return readProgress();
 }
 
-export function updateReadme(progress: Progress) {
-  const readmeContent = readmeMD(progress);
+export async function updateReadme(progress: Progress) {
+  const readmeContent = await readmeMD(progress);
   const readmePath = path.join("", "README.md");
 
   fs.unlinkSync(readmePath);

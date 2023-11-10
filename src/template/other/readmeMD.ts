@@ -1,3 +1,4 @@
+import { getPrivateLeaderboard } from "../../service/api.js";
 import { Progress } from "../../service/progress/types.js";
 import { stripIndents } from "common-tags";
 
@@ -24,9 +25,26 @@ const renderDayBadges = (progress: Progress) => {
     .join("\n");
 };
 
-const readmeMD = (progress: Progress) => {
+const renderLeaderboard = async (year: number) => {
+  const leaderboardItems = await getPrivateLeaderboard(year);
+
+  const items = leaderboardItems?.map((row) => {
+    return `| ${row.participant} | ${
+      row.stars ? [...Array(Number(row.stars)).fill("⭐️")].join("") : "-"
+    } |`;
+  });
+
+  return (
+    "| Participant | Stars |\n" +
+    "| ------------- | ------------- |\n" +
+    items?.join("\n")
+  );
+};
+
+const readmeMD = async (progress: Progress) => {
   const dayBadges = renderDayBadges(progress);
   const year = progress.year;
+  const leaderboard = await renderLeaderboard(year);
 
   return stripIndents`
     <!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->
@@ -49,15 +67,20 @@ const readmeMD = (progress: Progress) => {
 
     _Click a badge to go to the specific day._
 
+    ## Leaderboard 👀
+    ${leaderboard}
+
     ---
 
-    ## Installation
+    ## Instructions
+
+    **Installation**
 
     \`\`\`
     pnpm install 
     \`\`\`
 
-    ## Create day boilerplate
+    **Create day boilerplate**
 
     \`\`\`
     pnpm start <day-number>
@@ -69,7 +92,7 @@ const readmeMD = (progress: Progress) => {
     pnpm start 1
     \`\`\`
 
-    ## Run dev mode
+   **Run dev mode**
 
     \`\`\`
     pnpm dev <day-number>
@@ -81,7 +104,7 @@ const readmeMD = (progress: Progress) => {
     pnpm dev 1
     \`\`\`
 
-    ## Run tests
+    **Run tests**
 
     \`\`\`
     pnpm test
@@ -93,7 +116,7 @@ const readmeMD = (progress: Progress) => {
     pnpm test
     \`\`\`
 
-    ## Send solutions
+   **Send solutions**
 
     \`\`\`
     pnpm submit <day-number>
