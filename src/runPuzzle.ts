@@ -8,6 +8,8 @@ import {
 import chokidar from "chokidar";
 import { readProgress, saveProgress } from "./service/progress/index.js";
 
+type Error = { message: string };
+
 const DAY = process.argv[2];
 
 if (!DAY) {
@@ -30,10 +32,9 @@ const dayFileInputPath = path.join(
 const currentDir = path.dirname(new URL(import.meta.url).pathname);
 const relativePath = path.relative(currentDir, dayFilePath);
 
-const input = fs.readFileSync(dayFileInputPath, "utf8");
-
 const saveSolutions = async () => {
   try {
+    const input = fs.readFileSync(dayFileInputPath, "utf8");
     const { part1, part2 } = await import(`${relativePath}?t=${Date.now()}`);
 
     const solutionPart1 = part1(input);
@@ -61,7 +62,14 @@ const saveSolutions = async () => {
       saveProgress(process);
     }
   } catch (err) {
-    logErrorMessage("UNEXPECTED ERROR\n" + err);
+    if (err instanceof Error) {
+      if (err.message.includes("no such file or directory")) {
+        logErrorMessage(`MISSING DAY DIR. Try "pnpm start ${DAY}"\n` + err);
+      } else {
+        logErrorMessage("UNEXPECTED ERROR\n" + err);
+      }
+    }
+
     process.exit(1);
   }
 };
