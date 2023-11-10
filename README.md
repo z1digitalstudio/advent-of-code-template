@@ -1,6 +1,6 @@
 # Z1 Advent of code ⭐️
 
-This is an starting kit for [Advent of code](https://adventofcode.com) (AoC). It's created to provide you with the code structure and functionality so you can focus on designing your solutions for the puzzles.
+This is an starting kit for [Advent of code](https://adventofcode.com) (AoC). It's created to provide you with the code structure and functionality so you can focus on designing your solutions for the puzzles and forget about the rest.
 
 The following features are included:
 
