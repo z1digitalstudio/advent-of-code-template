@@ -1,105 +1,73 @@
-<!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->
+# Z1 Advent of code
 
-[![AoC](https://badgen.net/badge/AoC/2022/blue)](https://adventofcode.com/2022)
-[![Node](https://badgen.net/badge/Node/v16.13.0+/blue)](https://nodejs.org/en/download/)
-![Language](https://badgen.net/badge/Language/TypeScript/blue)
-![Language](https://badgen.net/badge/Language/JavaScript/blue)
-[![Template](https://badgen.net/badge/Template/aocrunner/blue)](https://github.com/caderek/aocrunner)
+This is an starting kit for [Advent of code](https://adventofcode.com) (AoC). It's created to provide you with the code structure and functionality so you can focus on designing your solutions for the puzzles.
 
-# 🎄 Advent of Code 2022 🎄
+It includes this features:
 
-## Solutions
+- Providing a template on Typescript or Javascript for daily solutions
+- Allowing you to work on your solutions on the mode
+- Fetching your input automatically
+- Submitting your solution from the terminal
+- Creating and updating automatically a nice overwiew README with your progress
 
-<!--SOLUTIONS-->
+## How to start
 
-![Day](https://badgen.net/badge/01/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/02/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/03/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/04/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/05/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/06/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/07/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/08/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/09/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/10/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/11/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/12/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/13/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/14/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/15/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/16/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/17/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/18/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/19/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/20/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/21/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/22/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/23/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/24/%E2%98%86%E2%98%86/gray)
-![Day](https://badgen.net/badge/25/%E2%98%86%E2%98%86/gray)
+### Install dependencies:
 
-<!--/SOLUTIONS-->
-
-_Click a badge to go to the specific day._
-
----
-
-## Installation
-
-```
-pnpm install 
+```bash
+pnpm install
 ```
 
-## Create day boilerplate
+### Add .env file with variables:
 
-```
-pnpm start <day-number>
+```bash
+AOC_SESSION_KEY=
+YEAR=
 ```
 
-Example:
+To get your `AOC_SESSION_KEY` go to [Advent of code](https://adventofcode.com), open your inspector console and get session cookie from the Application tab.
 
-```
+> Using `AOC_SESSION_KEY` is optional.
+> You can leave this empty and work "manually", by simply copying and pasting input and solutions between your IDE and the AoC web.
+>
+> But you **will loose access to some features** like fetching input automatically, sending solutions, updating readme automatically with your progress.
+
+### Start working on your first puzzle
+
+```bash
 pnpm start 1
 ```
 
-## Run dev mode
+The `pnpm start <day>` command creates a folder at the `/puzzles` directory with an starting template to solving your puzzle.
 
-```
-pnpm dev <day-number>
-```
+The `/puzzles` directory will be your main working directory, containing all your solutions.
 
-Example:
+You can customize this template to your liking by editing files at `/templates` directory.
 
-```
-pnpm dev 1
-```
+// TODO Typescript template
 
-## Run tests
+### Send your solutions
 
-```
-pnpm test
+Once you have a solution for the puzzle, you can check if is correct by running:
+
+```bash
+pnpm submit 1
 ```
 
-Example:
+If your solution is correct this README will be updated automatically with your progress ✨. But don't worry, you could still see instructions for use.
+
+> This would be available _ONLY_ for users with an `AOC_SESSION_KEY`
+
+## Join the leaderboard
+
+You can [join](https://adventofcode.com/2022/leaderboard/private) Z1's private leaderboard:
 
 ```
-pnpm test
+3197226-79081dfb
 ```
 
-## Send solutions
+Also, if you're a Z1 employee, you can register to the AoC internal event for a chance to redeem the stars you won for fantastic Z1 swag and become the ⭐️⭐️ **_Z1 Coder of the year_** ⭐️⭐️.
 
-```
-pnpm submit <day-number>
-```
+## Acknowledgements
 
-Example:
-
-```
-pnpm start 1
-```
-
----
-
-✨🎄🎁🎄🎅🎄🎁🎄✨
-
-[🔗 Template instructions](https://github.com/z1digitalstudio/advent-of-code-template)
+This template is _heavily_ inspired on a awesome AOC runner from [@caderek](https://github.com/caderek). Check it out [here](https://github.com/caderek/aocrunner).
