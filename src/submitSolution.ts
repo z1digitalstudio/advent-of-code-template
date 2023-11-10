@@ -6,7 +6,6 @@ import { Progress } from "./service/progress/types.js";
 import { updateReadme } from "./updateReadme.js";
 
 const DAY = process.argv[2];
-const progress = getProgress();
 
 async function submit() {
   if (!checkAPIAvailability()) {
@@ -19,7 +18,7 @@ async function submit() {
   }
 
   const dayNum = Number(DAY);
-
+  const progress = getProgress();
   const parts = progress.days[dayNum - 1];
 
   for (const index in Object.entries(parts)) {
@@ -91,7 +90,7 @@ function getProgress() {
         "This puzzle has not been started yet.\n" +
         `Run \`pnpm start ${DAY}\`\n\n`
     );
-    throw new Error("Missing config, .aoc.config.json not created");
+    process.exit(1);
   }
 
   return readProgress();
