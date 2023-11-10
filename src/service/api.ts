@@ -132,7 +132,7 @@ export async function getPrivateLeaderboard(year: number) {
       return res.json();
     })
     .then((data) => {
-      const leaderboardAdmin = "";
+      const leaderboardAdmin = "Frontend Team";
       const members = (Object.values(data.members) as LeaderboardMember[]).map(
         (row) => {
           return { stars: row.stars, participant: row.name };
