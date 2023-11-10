@@ -1,4 +1,5 @@
 import path from "node:path";
+import fs from "node:fs";
 import {
   logCurrentResult,
   logErrorMessage,
@@ -20,18 +21,31 @@ const dayFilePath = path.join(
   "index.js"
 );
 
+const dayFileInputPath = path.join(
+  "puzzles",
+  `day-${DAY.padStart(2, "0")}`,
+  "input.txt"
+);
+
 const currentDir = path.dirname(new URL(import.meta.url).pathname);
 const relativePath = path.relative(currentDir, dayFilePath);
+
+const input = fs.readFileSync(dayFileInputPath, "utf8");
 
 const saveSolutions = async () => {
   try {
     const { part1, part2 } = await import(`${relativePath}?t=${Date.now()}`);
 
-    const solutionPart1 = part1(1);
-    const solutionPart2 = part2(1);
+    const solutionPart1 = part1(input);
+    const solutionPart2 = part2(input);
 
-    logCurrentResult(1, solutionPart1);
-    logCurrentResult(2, solutionPart2);
+    const parseSolution = (result: unknown) => {
+      if (typeof result === "undefined") return "undefined";
+      return String(result);
+    };
+
+    logCurrentResult(1, parseSolution(solutionPart1));
+    logCurrentResult(2, parseSolution(solutionPart2));
 
     const process = readProgress();
     const dayNum = Number(DAY);
