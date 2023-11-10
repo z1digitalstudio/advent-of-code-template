@@ -48,6 +48,7 @@ const saveSolutions = async () => {
     }
   } catch (err) {
     logErrorMessage("UNEXPECTED ERROR\n" + err);
+    process.exit(1);
   }
 };
 

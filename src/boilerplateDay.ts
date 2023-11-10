@@ -19,17 +19,6 @@ const cliArgs = process.argv;
 const DAY = cliArgs[2];
 const YEAR = process.env.YEAR;
 
-const getLanguage = () => {
-  const acceptedLang = ["ts", "js"];
-  const LANG_ENV = process.env.LANGUAGE ?? "";
-  const LANG_ARG =
-    cliArgs.indexOf("--ext") > 1 ? cliArgs[cliArgs.indexOf("--ext") + 1] : "js";
-
-  return acceptedLang.includes(LANG_ENV) ? LANG_ENV : LANG_ARG;
-};
-
-const language = getLanguage();
-
 function boilerplateDay() {
   if (DAY === undefined) {
     logErrorMessage("No day specified");
