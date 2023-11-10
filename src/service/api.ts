@@ -30,6 +30,8 @@ const apiRoutes = {
     `${API_URL}/${year}/day/${day}/input`,
   sendSolution: (day: number, year: number) =>
     `${API_URL}/${year}/day/${day}/answer`,
+  getPrivateLeaderboard: (year: number) =>
+    `${API_URL}/${year}/leaderboard/private/view/3197226?order=stars`,
 };
 
 export async function getInput(year: number, day: number, path: string) {
@@ -109,6 +111,33 @@ export async function sendSolution({
 
       return false;
     });
+}
+
+export async function getPrivateLeaderboard(year: number) {
+  return fetch(apiRoutes.getPrivateLeaderboard(year), {
+    headers: {
+      cookie: `session=${process.env.AOC_SESSION_KEY}`,
+    },
+  })
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error(String(res.status));
+      }
+
+      return res.text();
+    })
+    .then((body) => {
+      const mainNode = new JSDOM(body).window.document.querySelectorAll(
+        ".privboard-row"
+      );
+      const nodes = [...mainNode].map((item) => item.textContent);
+      nodes.shift();
+      nodes.pop();
+      return nodes.map((el) =>
+        String(el).replace(/\*/g, "").split("  ").filter(Boolean).slice(1)
+      );
+    })
+    .catch(handleErrors);
 }
 
 function handleErrors(e: Error) {
