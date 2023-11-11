@@ -24,14 +24,7 @@ function getProgress() {
 }
 
 export async function updateReadme() {
-  const configCreated = checkFileExists(CONFIG_PATH);
-
-  if (!configCreated) {
-    initProgress({ year: yearNum });
-    logSuccessMessage("Results JSON initialized");
-  }
-
-  const progress = readProgress();
+  const progress = getProgress();
 
   const readmeContent = await readmeMD(progress);
   const readmePath = path.join("", "README.md");

@@ -4,6 +4,7 @@ import { readProgress, saveProgress } from "./service/progress/index.js";
 import { logErrorMessage, logInfoMessage } from "./utils/log.js";
 import { Progress } from "./service/progress/types.js";
 import { updateReadme } from "./updateReadme.js";
+import { msToReadable } from "./utils/timeToReadable.js";
 
 const DAY = process.argv[2];
 
@@ -19,6 +20,22 @@ async function submit() {
 
   const dayNum = Number(DAY);
   const progress = getProgress();
+
+  if (progress.blockedTime.amount) {
+    const { amount, start } = progress.blockedTime;
+    const remainingMs = amount - (Date.now() - start);
+
+    if (remainingMs > 0) {
+      logErrorMessage(
+        "YOU WERE BLOCKED\n" +
+          `You tried too many times wrong in a short amount of time. You have to wait before trying again: ${msToReadable(
+            remainingMs
+          )}`
+      );
+      return false;
+    }
+  }
+
   const parts = progress.days[dayNum - 1];
 
   for (const index in Object.entries(parts)) {

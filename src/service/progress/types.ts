@@ -13,6 +13,7 @@ export type LeaderboardMember = {
 export type Progress = {
   year: number;
   days: { part1: DayProgress; part2: DayProgress }[];
+  blockedTime: { start: number; amount: number };
   leaderboard: {
     state: LeaderboardMember[];
     lastUpdated: number;

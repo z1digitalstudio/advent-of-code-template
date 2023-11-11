@@ -10,22 +10,11 @@ import { JSDOM } from "jsdom";
 import { checkFileExists } from "../utils/checkFileExists.js";
 import { readProgress, saveProgress } from "./progress/index.js";
 import { LeaderboardMember } from "./progress/types.js";
+import { strToNum } from "../utils/strToNum.js";
 
 dotenv.config();
 
 const API_URL = process.env.AOC_API ?? "https://adventofcode.com";
-
-export function checkAPIAvailability() {
-  if (!process.env.AOC_SESSION_KEY) {
-    logInfoMessage(
-      "API FEATURES OPTED OUT\n" +
-        "Session key is missing in .env file, therefore API features are not available\n" +
-        "If you want to opt-in, add valur for env var AOC_SESSION_KEY \n"
-    );
-    return false;
-  }
-  return true;
-}
 
 const apiRoutes = {
   getInput: (day: number, year: number) =>
@@ -71,6 +60,8 @@ export async function sendSolution({
   part: 1 | 2;
   solution: number;
 }) {
+  const progress = readProgress();
+
   return fetch(apiRoutes.sendSolution(day, year), {
     headers: {
       cookie: `session=${process.env.AOC_SESSION_KEY}`,
@@ -107,8 +98,26 @@ export async function sendSolution({
       ) {
         logInfoMessage(`Part ${part} was already completed or locked\n`);
       } else {
-        logErrorMessage("UNKNOWN RESPONSE\n");
+        logErrorMessage("UNKNOWN RESPONSE \n");
         console.log(`${info}\n`);
+      }
+
+      const waitTime = checkForWaitTimeInResponse(info);
+
+      if (waitTime) {
+        const blockedStart = Date.now();
+        const blockedAmount =
+          (waitTime.d * 24 * 60 * 60 +
+            waitTime.h * 60 * 60 +
+            waitTime.m * 60 +
+            waitTime.s) *
+          1000;
+
+        progress["blockedTime"] = {
+          start: blockedStart,
+          amount: blockedAmount,
+        };
+        saveProgress(progress);
       }
 
       return false;
@@ -178,4 +187,42 @@ function handleErrors(e: Error) {
 
     console.log(e);
   }
+}
+
+function checkForWaitTimeInResponse(info: string) {
+  const waitStr = info.match(
+    /(one|two|three|four|five|six|seven|eight|nine|ten) (second|minute|hour|day)/
+  );
+  const waitNum = info.match(/\d+\s*(s|m|h|d)/g);
+  if (waitStr !== null || waitNum !== null) {
+    const waitTime: { [key: string]: number } = {
+      s: 0,
+      m: 0,
+      h: 0,
+      d: 0,
+    };
+    if (waitStr !== null) {
+      const [_, time, unit] = waitStr;
+      waitTime[unit[0]] = strToNum(time);
+    } else if (waitNum !== null) {
+      waitNum.forEach((x) => {
+        waitTime[x.slice(-1)] = Number(x.slice(0, -1));
+      });
+    }
+
+    return waitTime;
+  }
+  return null;
+}
+
+export function checkAPIAvailability() {
+  if (!process.env.AOC_SESSION_KEY) {
+    logInfoMessage(
+      "API FEATURES OPTED OUT\n" +
+        "Session key is missing in .env file, therefore API features are not available\n" +
+        "If you want to opt-in, add valur for env var AOC_SESSION_KEY \n"
+    );
+    return false;
+  }
+  return true;
 }
