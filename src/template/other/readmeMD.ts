@@ -29,7 +29,7 @@ const renderLeaderboard = async (year: number) => {
   const leaderboardItems = await getPrivateLeaderboard(year);
 
   const items = leaderboardItems?.map((row) => {
-    return `| ${row.participant} | ${
+    return `| ${row.name} | ${
       row.stars ? [...Array(Number(row.stars)).fill("⭐️")].join("") : "-"
     } |`;
   });

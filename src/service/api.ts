@@ -119,6 +119,13 @@ export async function sendSolution({
 }
 
 export async function getPrivateLeaderboard(year: number) {
+  const normalizeData = (members: LeaderboardMember[]) => {
+    return members
+      .map((row) => {
+        return { stars: row.stars, name: row.name };
+      })
+      .sort((m1, m2) => (Number(m1.stars) > Number(m2.stars) ? -1 : 1));
+  };
   return fetch(apiRoutes.getPrivateLeaderboard(year), {
     headers: {
       cookie: `session=${process.env.AOC_SESSION_KEY}`,
@@ -133,14 +140,10 @@ export async function getPrivateLeaderboard(year: number) {
     })
     .then((data) => {
       const leaderboardAdmin = "Frontend Team";
-      const members = (Object.values(data.members) as LeaderboardMember[]).map(
-        (row) => {
-          return { stars: row.stars, participant: row.name };
-        }
+
+      return normalizeData(data.members).filter(
+        (m) => m.name !== leaderboardAdmin
       );
-      return members
-        .filter((m) => m.participant !== leaderboardAdmin)
-        .sort((m1, m2) => (Number(m1.stars) > Number(m2.stars) ? -1 : 1));
     })
     .catch(handleErrors);
 }
