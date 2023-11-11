@@ -6,16 +6,15 @@ import {
   readProgress,
 } from "./service/progress/index.js";
 import { logSuccessMessage } from "./utils/log.js";
-import { Progress } from "./service/progress/types.js";
 import readmeMD from "./template/other/readmeMD.js";
 
 import fs from "node:fs";
 
 const YEAR = process.env.YEAR;
+const yearNum = Number(YEAR);
 
 function getProgress() {
   const configCreated = checkFileExists(CONFIG_PATH);
-  const yearNum = Number(YEAR);
 
   if (!configCreated) {
     initProgress({ year: yearNum });
@@ -24,7 +23,16 @@ function getProgress() {
   return readProgress();
 }
 
-export async function updateReadme(progress: Progress) {
+export async function updateReadme() {
+  const configCreated = checkFileExists(CONFIG_PATH);
+
+  if (!configCreated) {
+    initProgress({ year: yearNum });
+    logSuccessMessage("Results JSON initialized");
+  }
+
+  const progress = readProgress();
+
   const readmeContent = await readmeMD(progress);
   const readmePath = path.join("", "README.md");
 
@@ -32,4 +40,4 @@ export async function updateReadme(progress: Progress) {
   fs.writeFileSync(readmePath, readmeContent);
 }
 
-updateReadme(getProgress());
+updateReadme();

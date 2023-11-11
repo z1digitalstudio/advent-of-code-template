@@ -8,13 +8,10 @@ import {
 import dotenv from "dotenv";
 import { JSDOM } from "jsdom";
 import { checkFileExists } from "../utils/checkFileExists.js";
+import { readProgress, saveProgress } from "./progress/index.js";
+import { LeaderboardMember } from "./progress/types.js";
 
 dotenv.config();
-
-type LeaderboardMember = {
-  name: string;
-  stars: number;
-};
 
 const API_URL = process.env.AOC_API ?? "https://adventofcode.com";
 
@@ -119,13 +116,24 @@ export async function sendSolution({
 }
 
 export async function getPrivateLeaderboard(year: number) {
-  const normalizeData = (members: LeaderboardMember[]) => {
-    return members
+  const timePeriod = 15 * 60 * 1000;
+  const progress = readProgress();
+
+  if (
+    progress.leaderboard.lastUpdated !== 0 &&
+    progress.leaderboard.lastUpdated - Date.now() < timePeriod
+  ) {
+    return progress.leaderboard.state;
+  }
+
+  const normalizeData = (members: LeaderboardMember[]): LeaderboardMember[] => {
+    return Object.values(members)
       .map((row) => {
         return { stars: row.stars, name: row.name };
       })
       .sort((m1, m2) => (Number(m1.stars) > Number(m2.stars) ? -1 : 1));
   };
+
   return fetch(apiRoutes.getPrivateLeaderboard(year), {
     headers: {
       cookie: `session=${process.env.AOC_SESSION_KEY}`,
@@ -141,9 +149,13 @@ export async function getPrivateLeaderboard(year: number) {
     .then((data) => {
       const leaderboardAdmin = "Frontend Team";
 
-      return normalizeData(data.members).filter(
+      const leaderboard = normalizeData(data.members).filter(
         (m) => m.name !== leaderboardAdmin
       );
+      progress["leaderboard"] = { lastUpdated: Date.now(), state: leaderboard };
+      saveProgress(progress);
+
+      return leaderboard;
     })
     .catch(handleErrors);
 }

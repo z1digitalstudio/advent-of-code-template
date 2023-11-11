@@ -77,7 +77,7 @@ async function checkSolution({
   if (isSolved) {
     dayData.solved = true;
     saveProgress(progress);
-    updateReadme(progress);
+    updateReadme();
   }
 }
 

@@ -7,12 +7,11 @@ const renderDayBadges = (progress: Progress) => {
     .map(({ part1, part2 }, index) => {
       const day = String(index + 1).padStart(2, "0");
 
+      const solvedColor = part1.solved || part2.solved ? "yellow" : "gray";
       const color =
         (part1.solved && part2.solved) || (part1.solved && day === "25")
           ? "green"
-          : part1.solved || part2.solved
-          ? "yellow"
-          : "gray";
+          : solvedColor;
 
       const badge = `![Day](https://badgen.net/badge/${day}/%E2%98%8${
         part1.solved ? 5 : 6

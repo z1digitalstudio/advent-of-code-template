@@ -6,6 +6,7 @@ export const CONFIG_PATH = ".aoc.data.json";
 const initProgress = ({ year }: { year: number }) => {
   const config: Progress = {
     year,
+    leaderboard: { lastUpdated: 0, state: [] },
     days: new Array(25).fill(0).map((_, i) => ({
       part1: {
         solved: false,
