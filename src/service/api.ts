@@ -11,6 +11,7 @@ import { checkFileExists } from "../utils/checkFileExists.js";
 import { readProgress, saveProgress } from "./progress/index.js";
 import { LeaderboardMember } from "./progress/types.js";
 import { strToNum } from "../utils/strToNum.js";
+import { msToReadable } from "../utils/timeToReadable.js";
 
 dotenv.config();
 
@@ -61,6 +62,21 @@ export async function sendSolution({
   solution: number;
 }) {
   const progress = readProgress();
+
+  if (progress.blockedTime.amount) {
+    const { amount, start } = progress.blockedTime;
+    const remainingMs = amount - (Date.now() - start);
+
+    if (remainingMs > 0) {
+      logErrorMessage(
+        "YOU WERE BLOCKED\n" +
+          `You tried too many times wrong in a short amount of time. You have to wait before trying again: ${msToReadable(
+            remainingMs
+          )}`
+      );
+      return false;
+    }
+  }
 
   return fetch(apiRoutes.sendSolution(day, year), {
     headers: {
