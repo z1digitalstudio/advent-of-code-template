@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/boilerplateDay.ts",
-    "dev": "ts-node src/runPuzzle.ts",
+    "dev": "nodemon src/runPuzzle.ts",
+    "send": "ts-node src/sendPuzzle.ts",
     "test": "vitest --changed",
     "update:readme": "ts-node src/updateReadme.ts"
   },
@@ -24,6 +25,7 @@
     "common-tags": "^1.8.2",
     "jsdom": "^22.1.0",
     "kleur": "^4.1.5",
+    "nodemon": "^3.0.1",
     "prompts": "^2.4.2"
   },
   "devDependencies": {

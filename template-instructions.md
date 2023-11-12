@@ -66,7 +66,7 @@ pnpm dev 1
 pnpm test
 ```
 
-![work on your puzzle, screenshot of terminal](./images/screenshot.png)
+<img src="./images/screenshot.png" alt="work on your puzzle, screenshot of terminal" width="450px">
 
 Once your ready, you can send your solution to Advent of code with the command `s`!
 
