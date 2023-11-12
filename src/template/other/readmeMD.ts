@@ -81,6 +81,7 @@ const readmeMD = async (progress: Progress) => {
     ---
 
     ## Instructions
+    [🔗 Template instructions](https://github.com/z1digitalstudio/advent-of-code-template)
 
     **Installation**
 
@@ -128,7 +129,6 @@ const readmeMD = async (progress: Progress) => {
 
     ✨🎄🎁🎄🎅🎄🎁🎄✨
 
-    [🔗 Template instructions](https://github.com/z1digitalstudio/advent-of-code-template)
   `;
 };
 
