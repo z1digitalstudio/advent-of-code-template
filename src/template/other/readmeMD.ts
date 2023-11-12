@@ -1,12 +1,12 @@
 import { getPrivateLeaderboard } from "../../service/api.js";
 import { Progress } from "../../service/progress/types.js";
 import { stripIndents } from "common-tags";
-import { logErrorMessage } from "../../utils/log.js";
+import { logErrorMessage, logSuccessMessage } from "../../utils/log.js";
 
 const YEAR = process.env.YEAR;
 if (!YEAR) logErrorMessage("Please add `YEAR` to .env file");
 
-const yearNum = Number(YEAR);
+const year = Number(YEAR);
 
 const renderDayBadges = (progress: Progress) => {
   return progress.days
@@ -31,7 +31,7 @@ const renderDayBadges = (progress: Progress) => {
 };
 
 const renderLeaderboard = async () => {
-  const leaderboardItems = await getPrivateLeaderboard(yearNum);
+  const leaderboardItems = await getPrivateLeaderboard(year);
   const renderStarsRow = (stars: number) => {
     return [...Array(Number(stars)).fill("⭐️")].join("");
   };
@@ -51,8 +51,9 @@ const renderLeaderboard = async () => {
 
 const readmeMD = async (progress: Progress) => {
   const dayBadges = renderDayBadges(progress);
-  const year = progress.year;
   const leaderboard = await renderLeaderboard();
+
+  logSuccessMessage("README file created 🎉");
 
   return stripIndents`
     <!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->
