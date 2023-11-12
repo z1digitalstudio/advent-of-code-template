@@ -25,7 +25,7 @@ const renderDayBadges = (progress: Progress) => {
         part2.solved || (part1.solved && day === "25") ? 5 : 6
       }/${color})`;
 
-      return color !== "gray" ? `[${badge}](src/day${day})` : badge;
+      return color !== "gray" ? `[${badge}](puzzles/day-${day})` : badge;
     })
     .join("\n");
 };
