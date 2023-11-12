@@ -117,18 +117,6 @@ const readmeMD = async (progress: Progress) => {
     pnpm test
     \`\`\`
 
-   **Send solutions**
-
-    \`\`\`
-    pnpm submit <day-number>
-    \`\`\`
-
-    Example:
-
-    \`\`\`
-    pnpm start 1
-    \`\`\`
-
     ---
 
     ✨🎄🎁🎄🎅🎄🎁🎄✨
