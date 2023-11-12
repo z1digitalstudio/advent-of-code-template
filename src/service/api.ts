@@ -198,7 +198,7 @@ function handleErrors(e: Error) {
   } else if (e.message.startsWith("5")) {
     logErrorMessage("Server error\n\n");
   } else if (e.message === "404") {
-    logErrorMessage("Challenge not found \n\n");
+    logErrorMessage("Not found \n\n");
   } else {
     logErrorMessage(
       "UNEXPECTED ERROR\nPlease check your internet connection and retry.\n\nIf you think it's a bug, contact organizers"

@@ -1,6 +1,12 @@
 import { getPrivateLeaderboard } from "../../service/api.js";
 import { Progress } from "../../service/progress/types.js";
 import { stripIndents } from "common-tags";
+import { logErrorMessage } from "../../utils/log.js";
+
+const YEAR = process.env.YEAR;
+if (!YEAR) logErrorMessage("Please add `YEAR` to .env file");
+
+const yearNum = Number(YEAR);
 
 const renderDayBadges = (progress: Progress) => {
   return progress.days
@@ -24,8 +30,8 @@ const renderDayBadges = (progress: Progress) => {
     .join("\n");
 };
 
-const renderLeaderboard = async (year: number) => {
-  const leaderboardItems = await getPrivateLeaderboard(year);
+const renderLeaderboard = async () => {
+  const leaderboardItems = await getPrivateLeaderboard(yearNum);
   const renderStarsRow = (stars: number) => {
     return [...Array(Number(stars)).fill("⭐️")].join("");
   };
@@ -46,7 +52,7 @@ const renderLeaderboard = async (year: number) => {
 const readmeMD = async (progress: Progress) => {
   const dayBadges = renderDayBadges(progress);
   const year = progress.year;
-  const leaderboard = await renderLeaderboard(year);
+  const leaderboard = await renderLeaderboard();
 
   return stripIndents`
     <!-- Entries between SOLUTIONS and RESULTS tags are auto-generated -->

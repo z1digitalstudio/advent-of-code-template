@@ -1,7 +1,7 @@
 import kleur from "kleur";
 
 export function logErrorMessage(message: string) {
-  console.log(`${kleur.white().bgRed(" ERROR ")} ${kleur.red(message)}`);
+  console.log(`${kleur.black().bgRed(" ERROR ")} ${kleur.red(message)}`);
 }
 
 export function logInfoMessage(message: string) {
