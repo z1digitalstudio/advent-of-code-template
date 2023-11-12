@@ -32,5 +32,3 @@ export async function updateReadme() {
   fs.unlinkSync(readmePath);
   fs.writeFileSync(readmePath, readmeContent);
 }
-
-updateReadme();

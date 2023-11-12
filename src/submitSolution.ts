@@ -5,22 +5,15 @@ import { logErrorMessage, logInfoMessage } from "./utils/log.js";
 import { Progress } from "./service/progress/types.js";
 import { updateReadme } from "./updateReadme.js";
 
-const DAY = process.argv[2];
-
-export async function submit() {
+export async function submit(day: number) {
   if (!checkAPIAvailability()) {
     logErrorMessage("Not available");
     return;
   }
-  if (DAY === undefined) {
-    logErrorMessage("No day specified");
-    return;
-  }
 
-  const dayNum = Number(DAY);
-  const progress = getProgress();
+  const progress = getProgress(day);
 
-  const parts = progress.days[dayNum - 1];
+  const parts = progress.days[day - 1];
 
   for (const index in Object.entries(parts)) {
     const [key, part] = Object.entries(parts)[index];
@@ -29,7 +22,7 @@ export async function submit() {
     if (!part.solved) {
       logInfoMessage(`Trying to solve ${key}...`);
       await checkSolution({
-        day: dayNum,
+        day,
         year: progress.year,
         part: partNum,
         solution: part.result,
@@ -82,14 +75,14 @@ async function checkSolution({
   }
 }
 
-function getProgress() {
-  const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
+function getProgress(day: number) {
+  const dayDirName = `puzzles/day-${String(day).padStart(2, "0")}`;
 
   if (!checkFileExists(dayDirName)) {
     logErrorMessage(
       "Cannot submit solution\n" +
         "This puzzle has not been started yet.\n" +
-        `Run \`pnpm start ${DAY}\`\n\n`
+        `Run \`pnpm start ${day}\`\n\n`
     );
     process.exit(1);
   }

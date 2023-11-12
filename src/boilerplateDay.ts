@@ -15,21 +15,14 @@ import fs from "node:fs";
 
 dotenv.config();
 
-const cliArgs = process.argv;
-const DAY = cliArgs[2];
 const YEAR = process.env.YEAR;
 
-function boilerplateDay() {
-  if (DAY === undefined) {
-    logErrorMessage("No day specified");
-    return;
-  }
+export function boilerplateDay(day: number) {
   if (YEAR === undefined) {
     logErrorMessage("Check that YEAR has been added to .env file");
     return;
   }
 
-  const dayNum = Number(DAY);
   const yearNum = Number(YEAR);
   const configCreated = checkFileExists(CONFIG_PATH);
 
@@ -38,16 +31,16 @@ function boilerplateDay() {
     logSuccessMessage("Results JSON initialized");
   }
 
-  if (dayNum < 1 || dayNum > 25) {
+  if (day < 1 || day > 25) {
     logErrorMessage("Wrong day - chose day between 1 and 25");
     return;
   }
 
-  const dayDirName = `puzzles/day-${DAY.padStart(2, "0")}`;
+  const dayDirName = `puzzles/day-${String(day).padStart(2, "0")}`;
   const templateDirName = "src/template/js";
   const inputPath = path.join(dayDirName, "input.txt");
-  const readmeContent = readmeDayMD(yearNum, dayNum);
-  const dailyTest = dayTest(dayNum);
+  const readmeContent = readmeDayMD(yearNum, day);
+  const dailyTest = dayTest(day);
 
   copy(templateDirName, dayDirName);
   fs.writeFileSync(path.join(dayDirName, "README.md"), readmeContent);
@@ -56,10 +49,8 @@ function boilerplateDay() {
   logSuccessMessage(`Boilerplate created at /${dayDirName}\n`);
 
   if (checkAPIAvailability()) {
-    getInput(yearNum, dayNum, inputPath);
+    getInput(yearNum, day, inputPath);
   } else {
     logWarningMessage(`Input was not fetched automatically`);
   }
 }
-
-boilerplateDay();

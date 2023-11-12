@@ -4,11 +4,11 @@
   "description": "Z1 Template for Advent of Code",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/boilerplateDay.ts",
-    "dev": "nodemon src/runPuzzle.ts",
-    "send": "ts-node src/sendPuzzle.ts",
+    "start": "ts-node src/index.ts start",
+    "dev": "nodemon src/index.ts dev",
+    "send": "ts-node src/index.ts send",
     "test": "vitest --changed",
-    "update:readme": "ts-node src/updateReadme.ts"
+    "update:readme": "ts-node src/index.ts readme"
   },
   "type": "module",
   "keywords": [

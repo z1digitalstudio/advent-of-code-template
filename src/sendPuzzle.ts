@@ -13,7 +13,7 @@ import kleur from "kleur";
 
 type Error = { message: string };
 
-const DAY = process.argv[2];
+const DAY = process.argv[3];
 
 if (!DAY) {
   logErrorMessage('Please provide a day, e.g., "pnpm dev 1"');
@@ -35,7 +35,18 @@ const dayFileInputPath = path.join(
 const currentDir = path.dirname(new URL(import.meta.url).pathname);
 const relativePath = path.relative(currentDir, dayFilePath);
 
-const saveSolutions = async () => {
+export function send() {
+  chokidar.watch(dayFilePath).on("add", reload).on("change", reload);
+}
+
+async function reload() {
+  console.clear();
+  logInfoMessage(`Watching file: ${dayFilePath}...\n\n`);
+  await saveSolutions();
+  listenToInput();
+}
+
+async function saveSolutions() {
   try {
     const input = fs.readFileSync(dayFileInputPath, "utf8");
     const { part1, part2 } = await import(`${relativePath}?t=${Date.now()}`);
@@ -77,13 +88,6 @@ const saveSolutions = async () => {
 
     process.exit(1);
   }
-};
-
-async function reload() {
-  console.clear();
-  logInfoMessage(`Watching file: ${dayFilePath}...\n\n`);
-  await saveSolutions();
-  listenToInput();
 }
 
 async function listenToInput() {
@@ -99,7 +103,7 @@ async function listenToInput() {
   switch (command.toLowerCase()) {
     case "submit":
     case "s":
-      await submit();
+      await submit(Number(DAY));
       console.log("\n");
       break;
     case "quit":
@@ -111,5 +115,3 @@ async function listenToInput() {
   }
   listenToInput();
 }
-
-chokidar.watch(dayFilePath).on("add", reload).on("change", reload);
