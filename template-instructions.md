@@ -18,6 +18,14 @@ The following features are included:
 pnpm install
 ```
 
+### (Optional) Update your README:
+
+```bash
+pnpm update:readme
+```
+
+Init a fresh copy of a README that will overwrite this one and reflect your progress completing the puzzles. Don't worry, if you don't want to do that just yet, README will be automatically generated after you submit your first answer successfully.
+
 ### Add .env file with variables:
 
 ```bash
@@ -58,13 +66,7 @@ pnpm test
 
 ![work on your puzzle, screenshot of terminal](./images/screenshot.png)
 
-### Send your solutions
-
-Once you have a solution for the puzzle, you can check if is correct by running:
-
-```bash
-pnpm submit 1
-```
+Once your ready, you can send your solution to Advent of code with the command `s`!
 
 If your solution is correct, you will see a message in the terminal and this README will be updated automatically to show your progress ✨.
 

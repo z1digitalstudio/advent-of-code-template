@@ -26,10 +26,13 @@ const renderDayBadges = (progress: Progress) => {
 
 const renderLeaderboard = async (year: number) => {
   const leaderboardItems = await getPrivateLeaderboard(year);
+  const renderStarsRow = (stars: number) => {
+    return [...Array(Number(stars)).fill("⭐️")].join("");
+  };
 
   const items = leaderboardItems?.map((row) => {
     return `| ${row.name} | ${
-      row.stars ? [...Array(Number(row.stars)).fill("⭐️")].join("") : "-"
+      row.stars ? `${row.stars} ${renderStarsRow(row.stars)}` : "-"
     } |`;
   });
 
@@ -50,7 +53,6 @@ const readmeMD = async (progress: Progress) => {
 
     [![AoC](https://badgen.net/badge/AoC/${year}/blue)](https://adventofcode.com/${year})
     [![Node](https://badgen.net/badge/Node/v16.13.0+/blue)](https://nodejs.org/en/download/)
-    ![Language](https://badgen.net/badge/Language/TypeScript/blue)
     ![Language](https://badgen.net/badge/Language/JavaScript/blue)
     [![Template](https://badgen.net/badge/Template/aocrunner/blue)](https://github.com/caderek/aocrunner)
 
