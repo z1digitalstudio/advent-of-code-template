@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/boilerplateDay.ts",
-    "submit": "ts-node src/submitSolution.ts",
-    "update:readme": "ts-node src/updateReadme.ts",
     "dev": "ts-node src/runPuzzle.ts",
-    "test": "vitest --changed"
+    "test": "vitest --changed",
+    "update:readme": "ts-node src/updateReadme.ts"
   },
   "type": "module",
   "keywords": [
