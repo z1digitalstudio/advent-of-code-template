@@ -45,6 +45,12 @@ Init a fresh copy of a README that will overwrite this one and reflect your prog
 ### Generate files for your first puzzle
 
 ```bash
+pnpm start <dayNum>
+```
+
+Example
+
+```bash
 pnpm start 1
 ```
 
@@ -59,8 +65,16 @@ You can customize this template to your liking by editing files at `/templates/j
 You can run dev mode in one terminal along with tests in other to work on your solution:
 
 ```bash
+pnpm dev <dayNum>
+```
+
+Example
+
+```bash
 pnpm dev 1
 ```
+
+Run test on changed files:
 
 ```bash
 pnpm test
@@ -68,7 +82,19 @@ pnpm test
 
 <img src="./images/screenshot.png" alt="work on your puzzle, screenshot of terminal" width="450px">
 
-Once your ready, you can send your solution to Advent of code with the command `s`!
+### Submit your solution
+
+Once your ready, you can send your solution to Advent of code from the terminal:
+
+```bash
+pnpm submit <dayNum>
+```
+
+Example
+
+```bash
+pnpm submit 1
+```
 
 If your solution is correct, you will see a message in the terminal and this README will be updated automatically to show your progress ✨.
 
