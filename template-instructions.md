@@ -18,14 +18,6 @@ The following features are included:
 pnpm install
 ```
 
-### (Optional) Update your README:
-
-```bash
-pnpm update:readme
-```
-
-Init a fresh copy of a README that will overwrite this one and reflect your progress completing the puzzles. Don't worry, if you don't want to do that just yet, README will be automatically generated after you submit your first answer successfully.
-
 ### Add .env file with variables:
 
 ```bash
@@ -40,13 +32,23 @@ To get your `AOC_SESSION_KEY`, go to [Advent of code](https://adventofcode.com),
 >
 > But you **will loose access to some features** like fetching input automatically, sending solutions, updating readme automatically with your progress.
 
+### (Optional) Update your README:
+
+```bash
+pnpm update:readme
+```
+
+Init a fresh copy of a README that will overwrite this one and reflect your progress completing the puzzles. Don't worry, if you don't want to do that just yet, README will be automatically generated after you submit your first answer successfully.
+
+![README appearance](./images/screenshot-readme.png)
+
 ### Generate files for your first puzzle
 
 ```bash
 pnpm start 1
 ```
 
-The `pnpm start <day>` command creates a folder at the `/puzzles` directory with an starting template to solving your puzzle.
+The `pnpm start <day>` command creates a folder at the `/puzzles` directory with a starting template to solving your puzzle.
 
 The `/puzzles` directory will be your main working directory, containing all your solutions.
 
@@ -70,17 +72,15 @@ Once your ready, you can send your solution to Advent of code with the command `
 
 If your solution is correct, you will see a message in the terminal and this README will be updated automatically to show your progress ✨.
 
-> This would be available _ONLY_ for users with an `AOC_SESSION_KEY`
-
 ## Join the leaderboard
 
-You can [join](https://adventofcode.com/2022/leaderboard/private) Z1's private leaderboard:
+If you're a Z1 employee, you can [join](https://adventofcode.com/2022/leaderboard/private) Z1's private leaderboard:
 
 ```
 3197226-79081dfb
 ```
 
-Also, if you're a Z1 employee, you can register to the AoC internal event for a chance to redeem the stars you won for fantastic Z1 swag and become the ⭐️⭐️ **_Z1 Coder of the year_** ⭐️⭐️.
+Also register to the AoC internal event for a chance to redeem the stars you won for fantastic Z1 swag and become the ⭐️⭐️ **_Z1 Coder of the year_** ⭐️⭐️.
 
 Join channel `#z1-initiative-advent-of-code`
 
