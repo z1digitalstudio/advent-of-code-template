@@ -7,7 +7,7 @@ import { updateReadme } from "./updateReadme.js";
 
 const DAY = process.argv[2];
 
-async function submit() {
+export async function submit() {
   if (!checkAPIAvailability()) {
     logErrorMessage("Not available");
     return;
@@ -96,5 +96,3 @@ function getProgress() {
 
   return readProgress();
 }
-
-submit();

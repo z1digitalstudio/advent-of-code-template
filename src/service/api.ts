@@ -101,7 +101,10 @@ export async function sendSolution({
           : "Can't find the main element";
 
       if (info.includes("That's the right answer")) {
-        logSuccessMessage(`Part ${part} solved! You won a star ⭐️`);
+        logSuccessMessage(
+          `Part ${part} solved! You won a star ⭐️\n` +
+            `Updating readme to register your progress...`
+        );
         return true;
       } else if (info.includes("That's not the right answer")) {
         logErrorMessage(`WRONG ANSWER\n`);

@@ -6,7 +6,10 @@ import {
   logInfoMessage,
 } from "./utils/log.js";
 import chokidar from "chokidar";
+import prompts from "prompts";
 import { readProgress, saveProgress } from "./service/progress/index.js";
+import { submit } from "./submitSolution.js";
+import kleur from "kleur";
 
 type Error = { message: string };
 
@@ -47,6 +50,7 @@ const saveSolutions = async () => {
 
     logCurrentResult(1, parseSolution(solutionPart1));
     logCurrentResult(2, parseSolution(solutionPart2));
+    console.log("\n");
 
     const process = readProgress();
     const dayNum = Number(DAY);
@@ -61,6 +65,7 @@ const saveSolutions = async () => {
       dayData.part2.result = solutionPart2;
       saveProgress(process);
     }
+    return true;
   } catch (err) {
     if (err instanceof Error) {
       if (err.message.includes("no such file or directory")) {
@@ -74,12 +79,41 @@ const saveSolutions = async () => {
   }
 };
 
-saveSolutions();
+async function dev() {
+  chokidar.watch(dayFilePath).on("add", reload).on("change", reload);
+}
 
-chokidar.watch(dayFilePath).on("change", () => {
+async function reload() {
   console.clear();
-
   logInfoMessage(`Watching file: ${dayFilePath}...\n\n`);
-  logInfoMessage(`Restarting...\n\n`);
-  saveSolutions();
-});
+  await saveSolutions();
+  listenToInput();
+}
+
+async function listenToInput() {
+  const { command } = await prompts({
+    type: "text",
+    name: "command",
+    message: `${kleur.black().bgBlue("COMMANDS")}: type ${kleur
+      .blue()
+      .bold("s")} to submit solution, type ${kleur.blue().bold("q")} to quit`,
+  });
+
+  console.log("\n");
+  switch (command.toLowerCase()) {
+    case "submit":
+    case "s":
+      await submit();
+      console.log("\n");
+      break;
+    case "quit":
+    case "q":
+      process.exit();
+    default:
+      console.log("Command not supported");
+      break;
+  }
+  listenToInput();
+}
+
+dev();
