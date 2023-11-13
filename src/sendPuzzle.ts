@@ -105,6 +105,7 @@ async function listenToInput() {
     case "s":
       await submit(Number(DAY));
       console.log("\n");
+      process.exit(1);
       break;
     case "quit":
     case "q":
