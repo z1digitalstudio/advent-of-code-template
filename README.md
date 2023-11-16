@@ -95,7 +95,7 @@ Example
 ```bash
 pnpm submit 1
 ```
-
+Random change
 If your solution is correct, you will see a message in the terminal and this README will be updated automatically to show your progress ✨.
 
 ## Join the leaderboard
