@@ -1,0 +1,41 @@
+{
+  "name": "z1-advent-of-code-template",
+  "version": "1.0.0",
+  "description": "Z1 Template for Advent of Code",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts start",
+    "dev": "nodemon src/index.ts dev",
+    "send": "ts-node src/index.ts send",
+    "test": "vitest --changed",
+    "update:readme": "ts-node src/index.ts readme"
+  },
+  "type": "module",
+  "keywords": [
+    "advent of code",
+    "aoc",
+    "javascript",
+    "typescript",
+    "template"
+  ],
+  "author": "mariasimo@z1.digital",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "common-tags": "^1.8.2",
+    "jsdom": "^22.1.0",
+    "kleur": "^4.1.5",
+    "nodemon": "^3.0.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/common-tags": "^1.8.4",
+    "@types/jsdom": "^21.1.5",
+    "@types/node": "^20.8.10",
+    "@types/prompts": "^2.4.8",
+    "dotenv": "^16.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
+  }
+}
