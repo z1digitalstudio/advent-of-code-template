@@ -34,4 +34,5 @@
 --button.ghost.pressed: var(--white.white10);
 --button.subtle.enabled: var(--white.white5);
 --button.subtle.hover: var(--white.white10);
---button.subtle.pressed: var(--white.white10)}
+--button.subtle.pressed: var(--white.white10)
+}
