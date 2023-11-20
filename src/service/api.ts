@@ -140,7 +140,8 @@ export async function sendSolution({
       }
 
       return false;
-    });
+    })
+    .catch(handleErrors);
 }
 
 export async function getPrivateLeaderboard(year: number) {
@@ -203,9 +204,8 @@ function handleErrors(e: Error) {
     logErrorMessage(
       "UNEXPECTED ERROR\nPlease check your internet connection and retry.\n\nIf you think it's a bug, contact organizers"
     );
-
-    console.log(e);
   }
+  console.log(e);
 }
 
 function checkForWaitTimeInResponse(info: string) {

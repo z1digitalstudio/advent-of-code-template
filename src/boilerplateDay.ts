@@ -22,8 +22,17 @@ export function boilerplateDay(day: number) {
     logErrorMessage("Check that YEAR has been added to .env file");
     return;
   }
-
   const yearNum = Number(YEAR);
+  const isDecember = new Date().getMonth() === 11;
+  const currentYear = new Date().getFullYear();
+
+  if (yearNum === currentYear && !isDecember) {
+    logErrorMessage(
+      `Year declared at .env file needs to be ${currentYear - 1} or less`
+    );
+    return;
+  }
+
   const configCreated = checkFileExists(CONFIG_PATH);
 
   if (!configCreated) {
