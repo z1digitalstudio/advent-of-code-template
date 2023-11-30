@@ -21,7 +21,7 @@
 import { readFile } from "./utils.js";
 
 // You can use readFile this way
-// const exampleInput = readFile(puzzles/day01/example.txt)
+// const exampleInput = readFile('puzzles/day-01/example.txt')
 
 const parseInput = (rawInput) => rawInput;
 
