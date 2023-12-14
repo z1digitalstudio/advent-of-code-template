@@ -13,33 +13,24 @@ import kleur from "kleur";
 
 type Error = { message: string };
 
-const DAY = process.argv[3];
-
-if (!DAY) {
-  logErrorMessage('Please provide a day, e.g., "pnpm dev 1"');
-  process.exit(1);
-}
-
-const dayFilePath = path.join(
-  "puzzles",
-  `day-${DAY.padStart(2, "0")}`,
-  "index.js"
-);
-
-const dayFileInputPath = path.join(
-  "puzzles",
-  `day-${DAY.padStart(2, "0")}`,
-  "input.txt"
-);
-
-const currentDir = path.dirname(new URL(import.meta.url).pathname);
-const relativePath = path.relative(currentDir, dayFilePath);
-
 export function send() {
+  const DAY = process.argv[3];
+
+  const dayFilePath = path.join(
+    "puzzles",
+    `day-${DAY.padStart(2, "0")}`,
+    "index.js"
+  );
+
+  if (!DAY) {
+    logErrorMessage('Please provide a day, e.g., "pnpm dev 1"');
+    process.exit(1);
+  }
+
   chokidar.watch(dayFilePath).on("add", reload).on("change", reload);
 }
 
-async function reload() {
+async function reload(dayFilePath: string) {
   console.clear();
   logInfoMessage(`Watching file: ${dayFilePath}...\n\n`);
   await saveSolutions();
@@ -47,6 +38,22 @@ async function reload() {
 }
 
 async function saveSolutions() {
+  const DAY = process.argv[3];
+
+  const dayFilePath = path.join(
+    "puzzles",
+    `day-${DAY.padStart(2, "0")}`,
+    "index.js"
+  );
+
+  const dayFileInputPath = path.join(
+    "puzzles",
+    `day-${DAY.padStart(2, "0")}`,
+    "input.txt"
+  );
+  const currentDir = path.dirname(new URL(import.meta.url).pathname);
+  const relativePath = path.relative(currentDir, dayFilePath);
+
   try {
     const input = fs.readFileSync(dayFileInputPath, "utf8");
     const { part1, part2 } = await import(`${relativePath}?t=${Date.now()}`);
@@ -91,6 +98,19 @@ async function saveSolutions() {
 }
 
 async function listenToInput() {
+  const DAY = process.argv[3];
+
+  const dayFilePath = path.join(
+    "puzzles",
+    `day-${DAY.padStart(2, "0")}`,
+    "index.js"
+  );
+
+  if (!DAY) {
+    logErrorMessage('Please provide a day, e.g., "pnpm dev 1"');
+    process.exit(1);
+  }
+
   const { command } = await prompts({
     type: "text",
     name: "command",
